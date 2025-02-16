@@ -1,19 +1,17 @@
-import java.util.ArrayList;
-
 public class Product
 {
-    private String name;
+    private String brand;
     private double price;
 
-    public Product(String name, double price)
+    public Product(String brand, double price)
     {
-        this.name = name;
+        this.brand = brand;
         this.price = price;
     }
 
-    public String getName()
+    public String getBrand()
     {
-        return name;
+        return brand;
     }
 
     public double getPrice()

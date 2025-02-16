@@ -3,9 +3,9 @@ public class TV extends Product
     //private is encapsulation
     private int inches;
 
-    public TV(String name, double price, int inches)
+    public TV(String brand, double price, int inches)
     {
-        super(name, price); //calls the constructor of the father class
+        super(brand, price); //calls the constructor of the father class
         this.inches = inches;
     }
 

@@ -24,7 +24,7 @@ public class ShoppingCart
     public String getContents() {
         StringBuilder contents = new StringBuilder("Shopping Cart Contents:\n");
         for (Product product : products) {
-            contents.append("- ").append(product.getName()).append(" ($").append(product.getPrice()).append(")\n");
+            contents.append("- ").append(product.getBrand()).append(" ($").append(product.getPrice()).append(")\n");
         }
         return contents.toString();
 //      Ex de saída:
