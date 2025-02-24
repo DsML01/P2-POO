@@ -4,6 +4,7 @@ public class Product
     private String brand;
     private double price;
 
+    //Constructor: Method used to initialize an object
     public Product(String brand, double price)
     {
         this.brand = brand;
