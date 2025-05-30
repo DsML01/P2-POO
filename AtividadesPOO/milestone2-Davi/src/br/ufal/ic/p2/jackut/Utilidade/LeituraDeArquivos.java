@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.ufal.ic.p2.jackut.Entidades.User;
-import br.ufal.ic.p2.jackut.Servicos.SessionService;
+import br.ufal.ic.p2.jackut.Servicos.JackutServicesFacade;
 
 import br.ufal.ic.p2.jackut.Exceptions.Comunidade.ComunidadeNaoExisteException;
 import br.ufal.ic.p2.jackut.Exceptions.Usuario.UsuarioEhInimigoException;
@@ -27,29 +27,29 @@ public class LeituraDeArquivos {
     /**
      * Lê os arquivos do banco de dados carrega eles no sistema.
      *
-     * @param sessionService Sistema a ser carregado.
+     * @param jackutServicesFacade Sistema a ser carregado.
      */
 
-    public static void lerArquivos(SessionService sessionService) {
+    public static void lerArquivos(JackutServicesFacade jackutServicesFacade) {
         Map<String, String[]> comunidades = new HashMap<>();
 
-        lerArquivo("usuarios", sessionService, comunidades);
-        lerArquivo("amigos", sessionService, null);
-        lerArquivo("recados", sessionService, null);
-        lerArquivo("comunidades", sessionService, comunidades);
-        lerArquivo("mensagens", sessionService, null);
-        lerArquivo("relacoes", sessionService, null);
+        lerArquivo("usuarios", jackutServicesFacade, comunidades);
+        lerArquivo("amigos", jackutServicesFacade, null);
+        lerArquivo("recados", jackutServicesFacade, null);
+        lerArquivo("comunidades", jackutServicesFacade, comunidades);
+        lerArquivo("mensagens", jackutServicesFacade, null);
+        lerArquivo("relacoes", jackutServicesFacade, null);
     }
 
     /**
      * Lê um arquivo genérico com o nome passado e o carrega no sistema.
      *
      * @param arquivo      Nome do arquivo.
-     * @param sessionService      Sistema a ser carregado.
+     * @param jackutServicesFacade      Sistema a ser carregado.
      * @param comunidades  Mapa de comunidades.
      */
 
-    public static void lerArquivo(String arquivo, SessionService sessionService, Map<String, String[]> comunidades) {
+    public static void lerArquivo(String arquivo, JackutServicesFacade jackutServicesFacade, Map<String, String[]> comunidades) {
         File file = new File("./BaseDeDados/" + arquivo + ".txt");
 
         if (!file.exists()) return;
@@ -61,12 +61,12 @@ public class LeituraDeArquivos {
             while ((linha = br.readLine()) != null) {
                 dados = linha.split(";");
 
-                if(arquivo.equals("usuarios")) lerUsuarios(sessionService, dados, comunidades);
-                else if(arquivo.equals("amigos")) lerAmigos(sessionService, dados);
-                else if(arquivo.equals("recados")) lerRecados(sessionService, dados);
-                else if(arquivo.equals("comunidades")) lerComunidades(sessionService, dados, comunidades);
-                else if(arquivo.equals("mensagens")) lerMensagens(sessionService, dados);
-                else if(arquivo.equals("relacoes")) lerRelacoes(sessionService, dados);
+                if(arquivo.equals("usuarios")) lerUsuarios(jackutServicesFacade, dados, comunidades);
+                else if(arquivo.equals("amigos")) lerAmigos(jackutServicesFacade, dados);
+                else if(arquivo.equals("recados")) lerRecados(jackutServicesFacade, dados);
+                else if(arquivo.equals("comunidades")) lerComunidades(jackutServicesFacade, dados, comunidades);
+                else if(arquivo.equals("mensagens")) lerMensagens(jackutServicesFacade, dados);
+                else if(arquivo.equals("relacoes")) lerRelacoes(jackutServicesFacade, dados);
             }
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo " + arquivo);
@@ -76,12 +76,12 @@ public class LeituraDeArquivos {
     /**
      * Lê os usuários do arquivo "usuarios.txt".
      *
-     * @param sessionService      Sistema a ser carregado.
+     * @param jackutServicesFacade      Sistema a ser carregado.
      * @param dados        Dados do arquivo.
      * @param comunidades  Mapa de comunidades.
      */
 
-    private static void lerUsuarios(SessionService sessionService, String[] dados, Map<String, String[]> comunidades) {
+    private static void lerUsuarios(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
         String login = dados[0];
         String senha = dados[1];
         String nome = "";
@@ -102,18 +102,18 @@ public class LeituraDeArquivos {
                 .split(",");
 
         comunidades.put(login, comunidadesUsuario);
-        sessionService.setUsuario(user);
+        jackutServicesFacade.setUsuario(user);
     }
 
     /**
      * Lê os amigos dos usuários do arquivo "amigos.txt".
      *
-     * @param sessionService  Sistema a ser carregado.
+     * @param jackutServicesFacade  Sistema a ser carregado.
      * @param dados    Dados do arquivo.
      */
 
-    private static void lerAmigos(SessionService sessionService, String[] dados) {
-        User user = sessionService.getUsuario(dados[0]);
+    private static void lerAmigos(JackutServicesFacade jackutServicesFacade, String[] dados) {
+        User user = jackutServicesFacade.getUsuario(dados[0]);
 
         if (dados[1].length() <= 2) {
             return;
@@ -122,37 +122,37 @@ public class LeituraDeArquivos {
         String[] amigos = dados[1].substring(1, dados[1].length() - 1).split(",");
 
         for (String amigo : amigos) {
-            user.setAmigo(sessionService.getUsuario(amigo));
+            user.setAmigo(jackutServicesFacade.getUsuario(amigo));
         }
     }
 
     /**
      * Lê os recados dos usuários do arquivo "recados.txt".
      *
-     * @param sessionService  Sistema a ser carregado.
+     * @param jackutServicesFacade  Sistema a ser carregado.
      * @param dados    Dados do arquivo.
      */
 
-    private static void lerRecados(SessionService sessionService, String[] dados) {
-        User user = sessionService.getUsuario(dados[0]);
-        User amigo = sessionService.getUsuario(dados[1]);
+    private static void lerRecados(JackutServicesFacade jackutServicesFacade, String[] dados) {
+        User user = jackutServicesFacade.getUsuario(dados[0]);
+        User amigo = jackutServicesFacade.getUsuario(dados[1]);
         String recado = dados[2];
 
         try {
-            sessionService.enviarRecado(amigo, user, recado);
+            jackutServicesFacade.enviarRecado(amigo, user, recado);
         } catch (UsuarioEhInimigoException e) {}
     }
 
     /**
      * Lê as comunidades dos usuários do arquivo "comunidades.txt".
      *
-     * @param sessionService      Sistema a ser carregado.
+     * @param jackutServicesFacade      Sistema a ser carregado.
      * @param dados        Dados do arquivo.
      * @param comunidades  Mapa de comunidades.
      */
 
-    private static void lerComunidades(SessionService sessionService, String[] dados, Map<String, String[]> comunidades) {
-        User dono = sessionService.getUsuario(dados[0]);
+    private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
+        User dono = jackutServicesFacade.getUsuario(dados[0]);
         String nome = dados[1];
         String descricao = dados[2];
 
@@ -167,16 +167,16 @@ public class LeituraDeArquivos {
                 continue;
             }
 
-            novaComunidade.adicionarMembro(sessionService.getUsuario(membro));
+            novaComunidade.adicionarMembro(jackutServicesFacade.getUsuario(membro));
         }
 
-        sessionService.setComunidade(nome, novaComunidade);
+        jackutServicesFacade.setComunidade(dono, nome, descricao);
 
         try {
             for (String login : comunidades.keySet()) {
-                User user = sessionService.getUsuario(login);
+                User user = jackutServicesFacade.getUsuario(login);
                 for (String comunidade : comunidades.get(login)) {
-                    user.setParticipanteComunidade(sessionService.getComunidade(comunidade));
+                    user.setParticipanteComunidade(jackutServicesFacade.getComunidade(comunidade));
                 }
             }
         } catch (ComunidadeNaoExisteException e) {}
@@ -185,12 +185,12 @@ public class LeituraDeArquivos {
     /**
      * Lê as mensagens dos usuários do arquivo "mensagens.txt".
      *
-     * @param sessionService  Sistema a ser carregado.
+     * @param jackutServicesFacade  Sistema a ser carregado.
      * @param dados    Dados do arquivo.
      */
 
-    private static void lerMensagens(SessionService sessionService, String[] dados) {
-        User user = sessionService.getUsuario(dados[0]);
+    private static void lerMensagens(JackutServicesFacade jackutServicesFacade, String[] dados) {
+        User user = jackutServicesFacade.getUsuario(dados[0]);
         String mensagem = dados[1];
 
         Mensagem msg = new Mensagem(mensagem);
@@ -201,15 +201,15 @@ public class LeituraDeArquivos {
     /**
      * Lê as relações dos usuários do arquivo "relacoes.txt".
      *
-     * @param sessionService  Sistema a ser carregado.
+     * @param jackutServicesFacade  Sistema a ser carregado.
      * @param dados    Dados do arquivo.
      *
      * @see TiposRelacionamento
      */
 
-    private static void lerRelacoes(SessionService sessionService, String[] dados) {
-        User user = sessionService.getUsuario(dados[0]);
-        User userAlvo = sessionService.getUsuario(dados[1]);
+    private static void lerRelacoes(JackutServicesFacade jackutServicesFacade, String[] dados) {
+        User user = jackutServicesFacade.getUsuario(dados[0]);
+        User userAlvo = jackutServicesFacade.getUsuario(dados[1]);
         TiposRelacionamento tipo = TiposRelacionamento.valueOf(dados[2]);
 
         switch (tipo) {

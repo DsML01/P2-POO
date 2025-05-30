@@ -2,7 +2,7 @@ package br.ufal.ic.p2.jackut.App;
 
 import br.ufal.ic.p2.jackut.Entidades.User;
 import br.ufal.ic.p2.jackut.Exceptions.Recado.SemRecadosException;
-import br.ufal.ic.p2.jackut.Servicos.SessionService;
+import br.ufal.ic.p2.jackut.Servicos.JackutServicesFacade;
 import br.ufal.ic.p2.jackut.Entidades.*;
 
 import br.ufal.ic.p2.jackut.Exceptions.Usuario.*;
@@ -19,16 +19,16 @@ import br.ufal.ic.p2.jackut.Utilidade.*;
  */
 
 public class Facade {
-    private final SessionService sessionService = new SessionService();
+    private final JackutServicesFacade jackutServicesFacade = new JackutServicesFacade();
 
     /**
      * Apaga todos os dados mantidos no sistema.
      *
-     * @see SessionService
+     * @see JackutServicesFacade
      */
 
     public void zerarSistema() {
-        this.sessionService.zerarSistema();
+        this.jackutServicesFacade.zerarSistema();
     }
 
     /**
@@ -47,7 +47,7 @@ public class Facade {
     public void criarUsuario(String login, String senha, String nome) throws LoginOuSenhaInvalidoException, ContaJaExisteException {
         User user = new User(login, senha, nome);
 
-        this.sessionService.setUsuario(user);
+        this.jackutServicesFacade.setUsuario(user);
     }
 
     /**
@@ -63,7 +63,7 @@ public class Facade {
      */
 
     public String abrirSessao(String login, String senha) throws LoginOuSenhaInvalidoException, UsuarioNaoRegistradoException {
-        return this.sessionService.abrirSessao(login, senha);
+        return this.jackutServicesFacade.abrirSessao(login, senha);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Facade {
 
     public String getAtributoUsuario(String login, String atributo)
             throws UsuarioNaoRegistradoException, AtributoNaoPreenchidoException {
-        User user = this.sessionService.getUsuario(login);
+        User user = this.jackutServicesFacade.getUsuario(login);
 
         return user.getAtributo(atributo);
     }
@@ -98,7 +98,7 @@ public class Facade {
 
     public void editarPerfil(String id, String atributo, String valor)
             throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getSessaoUsuario(id);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
         user.getPerfil().setAtributo(atributo, valor);
     }
@@ -117,10 +117,10 @@ public class Facade {
 
     public void adicionarAmigo(String id, String amigo) throws UsuarioJaTemRelacaoException, UsuarioNaoRegistradoException,
             UsuarioRelacaoParaSiException, UsuarioJaPediuSolicitacaoException, UsuarioEhInimigoException {
-        User user = this.sessionService.getSessaoUsuario(id);
-        User amigoUser = this.sessionService.getUsuario(amigo);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        User amigoUser = this.jackutServicesFacade.getUsuario(amigo);
 
-        this.sessionService.adicionarAmigo(user, amigoUser);
+        this.jackutServicesFacade.adicionarAmigo(user, amigoUser);
     }
 
     /**
@@ -134,8 +134,8 @@ public class Facade {
      */
 
     public boolean ehAmigo(String login, String amigo) throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getUsuario(login);
-        User amigoUser = this.sessionService.getUsuario(amigo);
+        User user = this.jackutServicesFacade.getUsuario(login);
+        User amigoUser = this.jackutServicesFacade.getUsuario(amigo);
 
         return user.getAmigos().contains(amigoUser);
     }
@@ -152,7 +152,7 @@ public class Facade {
      */
 
     public String getAmigos(String login) throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getUsuario(login);
+        User user = this.jackutServicesFacade.getUsuario(login);
 
         return user.getAmigosString();
     }
@@ -171,10 +171,10 @@ public class Facade {
      */
 
     public void enviarRecado(String id, String destinatario, String recado) throws UsuarioNaoRegistradoException, MensagemParaSiException, UsuarioEhInimigoException {
-        User user = this.sessionService.getSessaoUsuario(id);
-        User destinatarioUser = this.sessionService.getUsuario(destinatario);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        User destinatarioUser = this.jackutServicesFacade.getUsuario(destinatario);
 
-        this.sessionService.enviarRecado(user, destinatarioUser, recado);
+        this.jackutServicesFacade.enviarRecado(user, destinatarioUser, recado);
     }
 
     /**
@@ -189,9 +189,9 @@ public class Facade {
      */
 
     public String lerRecado(String id) throws UsuarioNaoRegistradoException, SemRecadosException {
-        User user = this.sessionService.getSessaoUsuario(id);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
-        return this.sessionService.lerRecado(user);
+        return this.jackutServicesFacade.lerRecado(user);
     }
 
     /**
@@ -207,9 +207,9 @@ public class Facade {
 
     public void criarComunidade(String id, String nome, String descricao)
             throws UsuarioNaoRegistradoException, ComunidadeJaExisteException {
-        User user = this.sessionService.getSessaoUsuario(id);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
-        sessionService.criarComunidade(user, nome, descricao);
+        jackutServicesFacade.setComunidade(user, nome, descricao);
     }
 
     /**
@@ -222,7 +222,7 @@ public class Facade {
      */
 
     public String getDescricaoComunidade(String nome) throws ComunidadeNaoExisteException {
-        return this.sessionService.getDescricaoComunidade(nome);
+        return this.jackutServicesFacade.getDescricaoComunidade(nome);
     }
 
     /**
@@ -235,7 +235,7 @@ public class Facade {
      */
 
     public String getDonoComunidade(String nome) throws ComunidadeNaoExisteException {
-        return this.sessionService.getDonoComunidade(nome);
+        return this.jackutServicesFacade.getDonoComunidade(nome);
     }
 
     /**
@@ -250,7 +250,7 @@ public class Facade {
      */
 
     public String getMembrosComunidade(String nome) throws ComunidadeNaoExisteException {
-        return this.sessionService.getMembrosComunidade(nome);
+        return this.jackutServicesFacade.getMembrosComunidade(nome);
     }
 
     /**
@@ -265,9 +265,9 @@ public class Facade {
      */
 
     public String getComunidades(String login) throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getUsuario(login);
+        User user = this.jackutServicesFacade.getUsuario(login);
 
-        return this.sessionService.getComunidades(user);
+        return this.jackutServicesFacade.getComunidades(user);
     }
 
     /**
@@ -283,9 +283,9 @@ public class Facade {
 
     public void adicionarComunidade(String id, String nome)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, UsuarioJaNaComunidadeException {
-        User user = this.sessionService.getSessaoUsuario(id);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
-        this.sessionService.adicionarComunidade(user, nome);
+        this.jackutServicesFacade.adicionarComunidade(user, nome);
     }
 
     /**
@@ -299,9 +299,9 @@ public class Facade {
      */
 
     public String lerMensagem(String id) throws UsuarioNaoRegistradoException, SemMensagensException {
-        User user = this.sessionService.getSessaoUsuario(id);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
-        return this.sessionService.lerMensagem(user);
+        return this.jackutServicesFacade.lerMensagem(user);
     }
 
     /**
@@ -317,10 +317,10 @@ public class Facade {
 
     public void enviarMensagem(String id, String comunidade, String mensagem)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException {
-        this.sessionService.getSessaoUsuario(id);
-        Comunidade comunidadeAlvo = this.sessionService.getComunidade(comunidade);
+        this.jackutServicesFacade.getSessaoUsuario(id);
+        Comunidade comunidadeAlvo = this.jackutServicesFacade.getComunidade(comunidade);
 
-        this.sessionService.enviarMensagem(comunidadeAlvo, mensagem);
+        this.jackutServicesFacade.enviarMensagem(comunidadeAlvo, mensagem);
     }
 
     /**
@@ -331,8 +331,8 @@ public class Facade {
      * @return            Booleano indicando se o usuário é fã do ídolo
      */
     public boolean ehFa(String login, String loginIdolo) {
-        User user = this.sessionService.getUsuario(login);
-        User idolo = this.sessionService.getUsuario(loginIdolo);
+        User user = this.jackutServicesFacade.getUsuario(login);
+        User idolo = this.jackutServicesFacade.getUsuario(loginIdolo);
 
         return idolo.getFas().contains(user);
     }
@@ -350,10 +350,10 @@ public class Facade {
 
     public void adicionarIdolo (String id, String loginIdolo)
             throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException, UsuarioRelacaoParaSiException, UsuarioEhInimigoException {
-        User user = this.sessionService.getSessaoUsuario(id);
-        User idolo = this.sessionService.getUsuario(loginIdolo);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        User idolo = this.jackutServicesFacade.getUsuario(loginIdolo);
 
-        this.sessionService.adicionarIdolo(user, idolo);
+        this.jackutServicesFacade.adicionarIdolo(user, idolo);
     }
 
     /**
@@ -368,9 +368,9 @@ public class Facade {
      */
 
     public String getFas(String login) throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getUsuario(login);
+        User user = this.jackutServicesFacade.getUsuario(login);
 
-        return this.sessionService.getFas(user);
+        return this.jackutServicesFacade.getFas(user);
     }
 
     /**
@@ -384,8 +384,8 @@ public class Facade {
      */
 
     public boolean ehPaquera(String id, String loginPaquera) throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getSessaoUsuario(id);
-        User paquera = this.sessionService.getUsuario(loginPaquera);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        User paquera = this.jackutServicesFacade.getUsuario(loginPaquera);
 
         return user.getPaqueras().contains(paquera);
     }
@@ -404,10 +404,10 @@ public class Facade {
 
     public void adicionarPaquera (String id, String loginPaquera)
             throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException, UsuarioRelacaoParaSiException, UsuarioEhInimigoException {
-        User user = this.sessionService.getSessaoUsuario(id);
-        User paquera = this.sessionService.getUsuario(loginPaquera);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        User paquera = this.jackutServicesFacade.getUsuario(loginPaquera);
 
-        this.sessionService.adicionarPaquera(user, paquera);
+        this.jackutServicesFacade.adicionarPaquera(user, paquera);
     }
 
     /**
@@ -422,9 +422,9 @@ public class Facade {
      */
 
     public String getPaqueras(String id) throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getSessaoUsuario(id);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
-        return this.sessionService.getPaqueras(user);
+        return this.jackutServicesFacade.getPaqueras(user);
     }
 
     /**
@@ -440,10 +440,10 @@ public class Facade {
 
     public void adicionarInimigo(String id, String loginInimigo)
             throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException, UsuarioRelacaoParaSiException {
-        User user = this.sessionService.getSessaoUsuario(id);
-        User inimigo = this.sessionService.getUsuario(loginInimigo);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        User inimigo = this.jackutServicesFacade.getUsuario(loginInimigo);
 
-        this.sessionService.adicionarInimigo(user, inimigo);
+        this.jackutServicesFacade.adicionarInimigo(user, inimigo);
     }
 
     /**
@@ -455,9 +455,9 @@ public class Facade {
      */
 
     public void removerUsuario(String id) throws UsuarioNaoRegistradoException {
-        User user = this.sessionService.getSessaoUsuario(id);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
-        this.sessionService.removerUsuario(user, id);
+        this.jackutServicesFacade.removerUsuario(user, id);
     }
 
     /**
@@ -466,6 +466,6 @@ public class Facade {
      */
 
     public void encerrarSistema() {
-        this.sessionService.encerrarSistema();
+        this.jackutServicesFacade.encerrarSistema();
     }
 }
