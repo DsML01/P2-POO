@@ -147,7 +147,7 @@ public class JackutServicesFacade {
 
     /**
      * Envia uma mensagem para todos os membros de uma comunidade.
-     * @apiNote Esta implementação passa um remetente nulo para o {@link MessageService}.
+     * Esta implementação passa um remetente nulo para o {@link MessageService}.
      * A camada de aplicação que consome esta fachada é responsável por obter o
      * usuário da sessão e, se necessário, passar o remetente explicitamente.
      *
