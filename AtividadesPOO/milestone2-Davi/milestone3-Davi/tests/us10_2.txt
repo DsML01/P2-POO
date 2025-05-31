@@ -1,0 +1,24 @@
+# US10.2 - Persistência e listagem de múltiplos moderadores
+
+# --- TESTES DE PERSISTÊNCIA ---
+# 1. Verifica se o cargo de moderador persistiu após reiniciar
+expect {futuroMod} getModeradoresComunidade nome="Comunidade Top"
+
+# Setup para novo teste
+sDono=abrirSessao login=donoDaComunidade senha=123
+sMembro=abrirSessao login=membroComum senha=123
+
+# 2. Dono promove um segundo membro a moderador
+atribuirModerador sessao=${sDono} comunidade="Comunidade Top" login=membroComum
+
+# 3. Verifica a lista de moderadores com múltiplos usuários
+expect {futuroMod,membroComum} getModeradoresComunidade nome="Comunidade Top"
+
+# 4. Verifica se os membros originais (incluindo os promovidos) ainda constam na lista de membros
+expect {donoDaComunidade,futuroMod,membroComum} getMembrosComunidade nome="Comunidade Top"
+
+# 5. Verifica a persistência do dono da comunidade
+expect donoDaComunidade getDonoComunidade nome="Comunidade Top"
+
+encerrarSistema
+quit

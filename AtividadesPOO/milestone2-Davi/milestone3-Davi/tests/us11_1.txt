@@ -1,0 +1,38 @@
+# US11.1 - Expulsar um membro, que pode retornar em seguida
+
+zerarSistema
+
+# --- SETUP ---
+criarUsuario login=dono senha=123 nome="Dono"
+sDono=abrirSessao login=dono senha=123
+criarUsuario login=mod senha=123 nome="Mod"
+sMod=abrirSessao login=mod senha=123
+criarUsuario login=membroExpulso senha=123 nome="Expulso"
+sMembroExpulso=abrirSessao login=membroExpulso senha=123
+criarUsuario login=membroComum senha=123 nome="Membro"
+sMembroComum=abrirSessao login=membroComum senha=123
+
+criarComunidade sessao=${sDono} nome="Comunidade" descricao="Desc"
+adicionarComunidade sessao=${sMod} nome="Comunidade"
+adicionarComunidade sessao=${sMembroExpulso} nome="Comunidade"
+adicionarComunidade sessao=${sMembroComum} nome="Comunidade"
+atribuirModerador sessao=${sDono} comunidade="Comunidade" login=mod
+
+# --- TESTES DE LÓGICA E ERROS ---
+# 1. Um membro comum tenta expulsar outro (deve falhar)
+expectError "Apenas o dono ou moderadores podem realizar esta ação." expulsarMembroComunidade sessao=${sMembroComum} comunidade="Comunidade" login=membroExpulso
+
+# 2. Moderador expulsa um membro com sucesso
+expulsarMembroComunidade sessao=${sMod} comunidade="Comunidade" login=membroExpulso
+
+# 3. Verifica se o usuário foi removido da lista de membros ativos
+expect {dono,mod,membroComum} getMembrosComunidade nome="Comunidade"
+
+# 4. Usuário que foi expulso consegue entrar na comunidade novamente
+adicionarComunidade sessao=${sMembroExpulso} nome="Comunidade"
+
+# 5. Verifica se a lista de membros voltou ao estado original
+expect {dono,mod,membroComum,membroExpulso} getMembrosComunidade nome="Comunidade"
+
+encerrarSistema
+quit

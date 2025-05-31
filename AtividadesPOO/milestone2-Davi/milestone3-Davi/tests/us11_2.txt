@@ -1,0 +1,25 @@
+# US11.2 - Persistência da expulsão com retorno
+
+# --- TESTES DE PERSISTÊNCIA ---
+# 1. Verifica se a lista de membros (após o retorno do expulso) persistiu
+expect {dono,mod,membroComum,membroExpulso} getMembrosComunidade nome="Comunidade"
+
+# Setup para novo teste
+sDono=abrirSessao login=dono senha=123
+sMod=abrirSessao login=mod senha=123
+
+# 2. Moderador tenta expulsar o dono da comunidade (deve falhar)
+expectError "Não é possível expulsar o dono da comunidade." expulsarMembroComunidade sessao=${sMod} comunidade="Comunidade" login=dono
+
+# 3. Dono agora expulsa o moderador
+expulsarMembroComunidade sessao=${sDono} comunidade="Comunidade" login=mod
+
+# 4. Verifica se o moderador foi removido da lista de membros
+expect {dono,membroExpulso,membroComum} getMembrosComunidade nome="Comunidade"
+
+# 5. Moderador expulso consegue retornar à comunidade
+adicionarComunidade sessao=${sMod} nome="Comunidade"
+expect {dono,membroExpulso,membroComum,mod} getMembrosComunidade nome="Comunidade"
+
+encerrarSistema
+quit

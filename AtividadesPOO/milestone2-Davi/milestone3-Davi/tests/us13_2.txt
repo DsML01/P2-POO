@@ -1,0 +1,40 @@
+# US13.1 - Desbanir um membro da comunidade
+
+zerarSistema
+
+# --- SETUP ---
+criarUsuario login=dono senha=123 nome="Dono"
+sDono=abrirSessao login=dono senha=123
+criarUsuario login=mod senha=123 nome="Mod"
+sMod=abrirSessao login=mod senha=123
+criarUsuario login=membroBanido1 senha=123 nome="Banido1"
+sMembroBanido1=abrirSessao login=membroBanido1 senha=123
+criarUsuario login=membroBanido2 senha=123 nome="Banido2"
+sMembroBanido2=abrirSessao login=membroBanido2 senha=123
+
+criarComunidade sessao=${sDono} nome="Comunidade do Retorno" descricao="Desc"
+adicionarComunidade sessao=${sMod} nome="Comunidade do Retorno"
+adicionarComunidade sessao=${sMembroBanido1} nome="Comunidade do Retorno"
+adicionarComunidade sessao=${sMembroBanido2} nome="Comunidade do Retorno"
+atribuirModerador sessao=${sDono} comunidade="Comunidade do Retorno" login=mod
+banirMembroComunidade sessao=${sDono} comunidade="Comunidade do Retorno" login=membroBanido1
+banirMembroComunidade sessao=${sMod} comunidade="Comunidade do Retorno" login=membroBanido2
+
+# --- TESTES DE LÓGICA E ERROS ---
+# 1. Valida o estado inicial com dois membros banidos
+expect {membroBanido1,membroBanido2} getMembrosBanidosComunidade nome="Comunidade do Retorno"
+
+# 2. Tenta desbanir um membro que não está banido (deve falhar)
+expectError "Usuário não está banido desta comunidade." desbanirMembroComunidade sessao=${sDono} comunidade="Comunidade do Retorno" login=mod
+
+# 3. Dono desbane um membro com sucesso
+desbanirMembroComunidade sessao=${sDono} comunidade="Comunidade do Retorno" login=membroBanido1
+
+# 4. Verifica se o membro foi removido da lista de banidos
+expect {membroBanido2} getMembrosBanidosComunidade nome="Comunidade do Retorno"
+
+# 5. Verifica que o membro desbanido ainda NÃO voltou a ser membro automaticamente
+expect {dono,mod} getMembrosComunidade nome="Comunidade do Retorno"
+
+encerrarSistema
+quit

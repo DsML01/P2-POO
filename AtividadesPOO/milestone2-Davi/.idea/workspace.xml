@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d48b1504-c911-4c5a-9f97-cdcc4461060d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/easyaccept.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaseDeDados/amigos.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaseDeDados/comunidades.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaseDeDados/mensagens.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaseDeDados/recados.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaseDeDados/relacoes.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaseDeDados/usuarios.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/P2-2023.1-JACKUT.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/diagrama_classes_jackut.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/Main.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/allclasses-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/allpackages-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/App/Facade.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/App/class-use/Facade.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/App/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/App/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/App/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/Comunidade.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/Mensagem.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/Perfil.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/Recado.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/User.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/class-use/Comunidade.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/class-use/Mensagem.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/class-use/Perfil.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/class-use/Recado.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/class-use/User.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Entidades/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/ComunidadeJaExisteException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/ComunidadeNaoExisteException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/SemMensagensException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/UsuarioJaNaComunidadeException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/class-use/ComunidadeJaExisteException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/class-use/ComunidadeNaoExisteException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/class-use/SemMensagensException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/class-use/UsuarioJaNaComunidadeException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Comunidade/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Perfil/AtributoNaoPreenchidoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Perfil/class-use/AtributoNaoPreenchidoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Perfil/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Perfil/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Perfil/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Recado/MensagemParaSiException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Recado/SemRecadosException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Recado/class-use/MensagemParaSiException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Recado/class-use/SemRecadosException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Recado/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Recado/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Recado/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Sistema/ContaJaExisteException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Sistema/LoginOuSenhaInvalidoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Sistema/class-use/ContaJaExisteException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Sistema/class-use/LoginOuSenhaInvalidoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Sistema/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Sistema/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Sistema/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioEhInimigoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioJaPediuSolicitacaoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioJaTemRelacaoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioNaoRegistradoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioRelacaoParaSiException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/class-use/UsuarioEhInimigoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/class-use/UsuarioJaPediuSolicitacaoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/class-use/UsuarioJaTemRelacaoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/class-use/UsuarioNaoRegistradoException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/class-use/UsuarioRelacaoParaSiException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Exceptions/Usuario/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Servicos/SessionService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Servicos/class-use/SessionService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Servicos/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Servicos/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Servicos/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/EscritaDeArquivos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/LeituraDeArquivos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/UtilidadeString.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/class-use/EscritaDeArquivos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/class-use/LeituraDeArquivos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/class-use/UtilidadeString.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/Utilidade/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/tipos/TiposRelacionamento.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/tipos/class-use/TiposRelacionamento.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/tipos/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/tipos/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/br/ufal/ic/p2/jackut/tipos/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/class-use/Main.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/copy.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/element-list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/help-doc.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-10.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-11.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-12.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-13.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-14.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-15.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-16.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-6.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-7.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-8.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-9.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/ADDITIONAL_LICENSE_INFO" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/ASSEMBLY_EXCEPTION" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/jquery.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/jqueryUI.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/member-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/module-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/overview-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/overview-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/package-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resources/glass.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resources/x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-dir/jquery-3.6.1.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-dir/jquery-ui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-dir/jquery-ui.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/search-page.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/search.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/search.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/serialized-form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/stylesheet.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/tag-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/type-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/easyaccept.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/App/Facade.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Entidades/Comunidade.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Entidades/Mensagem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Entidades/Perfil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Entidades/Recado.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Entidades/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Comunidade/ComunidadeJaExisteException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Comunidade/ComunidadeNaoExisteException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Comunidade/SemMensagensException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Comunidade/UsuarioJaNaComunidadeException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Perfil/AtributoNaoPreenchidoException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Recado/MensagemParaSiException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Recado/SemRecadosException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Sistema/ContaJaExisteException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Sistema/LoginOuSenhaInvalidoException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioEhInimigoException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioJaPediuSolicitacaoException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioJaTemRelacaoException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioNaoRegistradoException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Exceptions/Usuario/UsuarioRelacaoParaSiException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Servicos/AuthenticationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Servicos/CommunityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Servicos/JackutServicesFacade.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Servicos/MessageService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Servicos/PersistenceService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Servicos/RelationshipService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Servicos/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Utilidade/EscritaDeArquivos.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Utilidade/LeituraDeArquivos.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Utilidade/UtilidadeString.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/tipos/TiposRelacionamento.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us10_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us10_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us11_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us11_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us12_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us12_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us13_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us13_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us1_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us1_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us2_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us2_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us3_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us3_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us4_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us4_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us5_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us5_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us6_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us6_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us7_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us7_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us8_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us8_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us9_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/us9_2.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Exception" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/../.." value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2wXxXDQpbkpQNshA11Jj0Rvqv4y" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "ServiceFacade",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/davim/repos/P2-POO/AtividadesPOO/milestone2-Davi/milestone3-Davi",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\davim\repos\P2-POO\AtividadesPOO\milestone2-Davi" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-20" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d48b1504-c911-4c5a-9f97-cdcc4461060d" name="Changes" comment="" />
+      <created>1746201756659</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746201756659</updated>
+      <workItem from="1746201757883" duration="147000" />
+      <workItem from="1746214858705" duration="2335000" />
+      <workItem from="1746219009631" duration="37926000" />
+      <workItem from="1746474107345" duration="3679000" />
+      <workItem from="1746500965961" duration="22000" />
+      <workItem from="1748366758826" duration="14247000" />
+      <workItem from="1748603769902" duration="21827000" />
+      <workItem from="1748652744469" duration="12091000" />
+      <workItem from="1748669559730" duration="124000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" log-message="true" suspend="NONE" type="java-line">
+          <url>file://$PROJECT_DIR$/src/br/ufal/ic/p2/jackut/Entidades/User.java</url>
+          <line>87</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

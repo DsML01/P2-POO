@@ -1,0 +1,38 @@
+# US12.1 - Banir um membro da comunidade
+
+zerarSistema
+
+# --- SETUP ---
+criarUsuario login=dono senha=123 nome="Dono"
+sDono=abrirSessao login=dono senha=123
+criarUsuario login=mod senha=123 nome="Mod"
+sMod=abrirSessao login=mod senha=123
+criarUsuario login=membroParaBanir senha=123 nome="Banido"
+sMembroBanido=abrirSessao login=membroParaBanir senha=123
+criarUsuario login=membroComum senha=123 nome="Membro"
+sMembroComum=abrirSessao login=membroComum senha=123
+
+criarComunidade sessao=${sDono} nome="Comunidade Radical" descricao="Desc"
+adicionarComunidade sessao=${sMod} nome="Comunidade Radical"
+adicionarComunidade sessao=${sMembroBanido} nome="Comunidade Radical"
+adicionarComunidade sessao=${sMembroComum} nome="Comunidade Radical"
+atribuirModerador sessao=${sDono} comunidade="Comunidade Radical" login=mod
+
+# --- TESTES DE LÓGICA E ERROS ---
+# 1. Tenta banir a si mesmo (moderador) (deve falhar)
+expectError "Não é possível banir a si mesmo." banirMembroComunidade sessao=${sMod} comunidade="Comunidade Radical" login=mod
+
+# 2. Dono bane um membro com sucesso
+banirMembroComunidade sessao=${sDono} comunidade="Comunidade Radical" login=membroParaBanir
+
+# 3. Verifica se o membro banido está na lista de banidos
+expect {membroParaBanir} getMembrosBanidosComunidade nome="Comunidade Radical"
+
+# 4. Verifica se o membro foi removido da lista de membros
+expect {dono,mod,membroComum} getMembrosComunidade nome="Comunidade Radical"
+
+# 5. Moderador tenta banir o dono (deve falhar)
+expectError "Não é possível banir o dono da comunidade." banirMembroComunidade sessao=${sMod} comunidade="Comunidade Radical" login=dono
+
+encerrarSistema
+quit

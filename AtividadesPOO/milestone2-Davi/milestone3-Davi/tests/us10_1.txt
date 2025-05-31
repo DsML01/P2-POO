@@ -1,0 +1,41 @@
+# US10.1 - Atribuir cargo de moderador a um membro da comunidade
+
+zerarSistema
+
+# --- SETUP ---
+# Criação de usuários: dono, futuro moderador, membro comum e um usuário de fora
+criarUsuario login=donoDaComunidade senha=123 nome="Dono"
+sDono=abrirSessao login=donoDaComunidade senha=123
+
+criarUsuario login=futuroMod senha=123 nome="Moderador"
+sMod=abrirSessao login=futuroMod senha=123
+
+criarUsuario login=membroComum senha=123 nome="Membro"
+sMembro=abrirSessao login=membroComum senha=123
+
+criarUsuario login=naoMembro senha=123 nome="Nao Membro"
+sNaoMembro=abrirSessao login=naoMembro senha=123
+
+# Criação da comunidade e adição de membros
+criarComunidade sessao=${sDono} nome="Comunidade Top" descricao="Desc"
+adicionarComunidade sessao=${sMod} nome="Comunidade Top"
+adicionarComunidade sessao=${sMembro} nome="Comunidade Top"
+
+# --- TESTES DE LÓGICA E ERROS ---
+# 1. Tenta atribuir moderador sendo um membro comum (deve falhar)
+expectError "Apenas o dono ou moderadores podem realizar esta ação." atribuirModerador sessao=${sMembro} comunidade="Comunidade Top" login=membroComum
+
+# 2. Tenta atribuir moderador a um usuário que não é membro (deve falhar)
+expectError "Usuário não é membro da comunidade." atribuirModerador sessao=${sDono} comunidade="Comunidade Top" login=naoMembro
+
+# 3. Dono atribui cargo de moderador com sucesso
+atribuirModerador sessao=${sDono} comunidade="Comunidade Top" login=futuroMod
+
+# 4. Verifica se o usuário agora é listado como moderador
+expect {futuroMod} getModeradoresComunidade nome="Comunidade Top"
+
+# 5. Tenta atribuir o cargo novamente para quem já é moderador (deve falhar)
+expectError "Usuário já é moderador." atribuirModerador sessao=${sDono} comunidade="Comunidade Top" login=futuroMod
+
+encerrarSistema
+quit

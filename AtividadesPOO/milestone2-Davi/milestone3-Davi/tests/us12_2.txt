@@ -1,0 +1,24 @@
+# US12.2 - Persistência do banimento e múltiplos membros banidos
+
+# --- TESTES DE PERSISTÊNCIA ---
+# 1. Verifica se a lista de banidos persistiu
+expect {membroParaBanir} getMembrosBanidosComunidade nome="Comunidade Radical"
+
+# 2. Verifica se a lista de membros ativos persistiu
+expect {dono,mod,membroComum} getMembrosComunidade nome="Comunidade Radical"
+
+# Setup para novo teste
+sMod=abrirSessao login=mod senha=123
+sMembroBanido=abrirSessao login=membroParaBanir senha=123
+
+# 3. Usuário banido tenta entrar na comunidade novamente (deve falhar)
+expectError "Usuário está banido desta comunidade." adicionarComunidade sessao=${sMembroBanido} nome="Comunidade Radical"
+
+# 4. Moderador bane outro membro
+banirMembroComunidade sessao=${sMod} comunidade="Comunidade Radical" login=membroComum
+
+# 5. Verifica a lista de banidos com múltiplos usuários
+expect {membroParaBanir,membroComum} getMembrosBanidosComunidade nome="Comunidade Radical"
+
+encerrarSistema
+quit
