@@ -1,0 +1,1 @@
+dono;Comunidade;Desc;{dono,membroComum,membroExpulso,mod};{}

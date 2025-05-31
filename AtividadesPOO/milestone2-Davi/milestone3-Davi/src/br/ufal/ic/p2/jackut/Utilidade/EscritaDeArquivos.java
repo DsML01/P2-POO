@@ -127,10 +127,13 @@ public class EscritaDeArquivos {
         StringBuilder comunidadesData = new StringBuilder();
         for (Comunidade comunidade : comunidades.values()) {
             String membros = comunidade.getMembrosString();
+            String moderadores = comunidade.getModeradoresString();
+
             comunidadesData.append(comunidade.getDono().getLogin()).append(";")
                     .append(comunidade.getNome()).append(";")
                     .append(comunidade.getDescricao()).append(";")
-                    .append(membros).append("\n");
+                    .append(membros).append(";")
+                    .append(moderadores).append("\n");
         }
 
         escreverArquivo("comunidades.txt", comunidadesData.toString());

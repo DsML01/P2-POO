@@ -5,6 +5,8 @@ import br.ufal.ic.p2.jackut.Entidades.User;
 import br.ufal.ic.p2.jackut.Exceptions.Comunidade.ComunidadeJaExisteException;
 import br.ufal.ic.p2.jackut.Exceptions.Comunidade.ComunidadeNaoExisteException;
 import br.ufal.ic.p2.jackut.Exceptions.Comunidade.UsuarioJaNaComunidadeException;
+import br.ufal.ic.p2.jackut.Exceptions.Comunidade.*;
+import br.ufal.ic.p2.jackut.Exceptions.Usuario.UsuarioNaoRegistradoException;
 
 import java.util.Collection;
 import java.util.Map;
@@ -97,6 +99,27 @@ public class CommunityService {
         }
     }
 
+    public void atribuirModerador(User user, Comunidade comunidade, User moderador)
+            throws ModeradorException, UsuarioNaoRegistradoException {
+
+        // Verifica se o usuário tem permissão (dono ou moderador)
+        if (!comunidade.getDono().equals(user) && !comunidade.isModerador(user)) {
+            throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
+        }
+
+        // Verifica se o alvo é membro da comunidade
+        if (!comunidade.getMembros().contains(moderador)) {
+            throw new ModeradorException("Usuário não é membro da comunidade.");
+        }
+
+        // Verifica se já é moderador
+        if (comunidade.isModerador(moderador)) {
+            throw new ModeradorException("Usuário já é moderador.");
+        }
+
+        comunidade.adicionarModerador(moderador);
+    }
+
     /**
      * Retorna uma coleção com todas as comunidades registradas no sistema.
      *
@@ -104,6 +127,26 @@ public class CommunityService {
      */
     public Collection<Comunidade> getAllComunidades() {
         return this.comunidadesData.values();
+    }
+
+    public void expulsarMembro(User executor, Comunidade comunidade, User membro)
+            throws ModeradorException, UsuarioNaoRegistradoException {
+
+        // Verifica permissões (dono ou moderador)
+        if (!comunidade.getDono().equals(executor) && !comunidade.isModerador(executor)) {
+            throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
+        }
+
+        // Verifica se o usuário é membro
+        if (!comunidade.isMembro(membro)) {
+            throw new ModeradorException("Usuário não é membro da comunidade.");
+        }
+
+        // Remove o membro
+        comunidade.removerMembro(membro);
+
+        // Remove das comunidades do usuário
+        membro.sairComunidade(comunidade);
     }
 
     /**

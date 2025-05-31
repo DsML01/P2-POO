@@ -256,10 +256,7 @@ public class LeituraDeArquivos {
 
         Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
 
-        // Adiciona o usuário como dono da comunidade
-        dono.setDonoComunidade(novaComunidade);
-
-        // Adiciona os outros membros que estão listados no arquivo comunidades.txt
+        // Membros
         String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
         for (String membroLogin : membros) {
             if (!membroLogin.trim().isEmpty() && !membroLogin.equals(dono.getLogin())) {
@@ -267,11 +264,16 @@ public class LeituraDeArquivos {
             }
         }
 
-        // --- CORREÇÃO AQUI ---
-        // ANTES (INCORRETO): Isso dispara a lógica de criação e duplica a participação do dono.
-        // jackutServicesFacade.setComunidade(dono, nome, descricao);
+        // Moderadores (novo campo)
+        if (dados.length > 4) {
+            String[] moderadores = dados[4].substring(1, dados[4].length() - 1).split(",");
+            for (String moderadorLogin : moderadores) {
+                if (!moderadorLogin.trim().isEmpty()) {
+                    novaComunidade.adicionarModerador(jackutServicesFacade.getUsuario(moderadorLogin.trim()));
+                }
+            }
+        }
 
-        // DEPOIS (CORRETO): Apenas carrega o objeto já pronto na memória.
         jackutServicesFacade.carregarComunidade(novaComunidade);
 
 

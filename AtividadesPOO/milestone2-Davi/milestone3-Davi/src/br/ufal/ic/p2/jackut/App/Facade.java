@@ -280,12 +280,12 @@ public class Facade {
      * @throws ComunidadeNaoExisteException        Exceção lançada caso a comunidade não exista
      * @throws UsuarioJaNaComunidadeException  Exceção lançada caso o usuário já esteja na comunidade
      */
-
-    public void adicionarComunidade(String id, String nome)
+// Na classe Facade (App/Facade.java)
+    public void adicionarComunidade(String id, String nomeComunidade)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, UsuarioJaNaComunidadeException {
-        User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
-        this.jackutServicesFacade.adicionarComunidade(user, nome);
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        this.jackutServicesFacade.adicionarMembroComunidade(user, nomeComunidade);
     }
 
     /**
@@ -458,6 +458,24 @@ public class Facade {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
 
         this.jackutServicesFacade.removerUsuario(user, id);
+    }
+
+    public void atribuirModerador(String id, String comunidade, String loginModerador)
+            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
+
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        this.jackutServicesFacade.atribuirModerador(user, comunidade, loginModerador);
+    }
+
+    public String getModeradoresComunidade(String nome) throws ComunidadeNaoExisteException {
+        return this.jackutServicesFacade.getModeradoresComunidade(nome);
+    }
+
+    public void expulsarMembroComunidade(String id, String comunidade, String loginMembro)
+            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
+
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        this.jackutServicesFacade.expulsarMembroComunidade(user, comunidade, loginMembro);
     }
 
     /**

@@ -1,5 +1,6 @@
 package br.ufal.ic.p2.jackut.Entidades;
 
+import br.ufal.ic.p2.jackut.Exceptions.Comunidade.ModeradorException;
 import br.ufal.ic.p2.jackut.Utilidade.UtilidadeString;
 
 import java.util.ArrayList;
@@ -113,6 +114,40 @@ public class Comunidade {
             // ANTES: membro.receberMensagem(mensagem);
             membro.getCaixaDeEntrada().receberMensagem(mensagem); // DEPOIS
         }
+    }
+
+    private final ArrayList<User> moderadores = new ArrayList<>();
+
+    public void adicionarModerador(User user) {
+        if (!moderadores.contains(user)) {
+            moderadores.add(user);
+        }
+    }
+
+    public boolean isModerador(User user) {
+        return moderadores.contains(user);
+    }
+
+    public String getModeradoresString() {
+        return UtilidadeString.formatArrayList(moderadores);
+    }
+
+    public ArrayList<User> getModeradores() {
+        return moderadores;
+    }
+
+    public void removerMembro(User user) throws ModeradorException {
+        // Não permite remover o dono
+        if (user.equals(this.dono)) {
+            throw new ModeradorException("Não é possível expulsar o dono da comunidade.");
+        }
+
+        this.membros.remove(user);
+        this.moderadores.remove(user); // Remove também dos moderadores se for o caso
+    }
+
+    public boolean isMembro(User user) {
+        return this.membros.contains(user);
     }
 
     /**

@@ -83,6 +83,29 @@ public class JackutServicesFacade {
         return comunidade.getMembrosString();
     }
 
+    public void atribuirModerador(User user, String nomeComunidade, String loginModerador)
+            throws ComunidadeNaoExisteException, UsuarioNaoRegistradoException, ModeradorException {
+
+        Comunidade comunidade = this.communityService.getComunidadePorNome(nomeComunidade);
+        User moderador = this.userService.getUsuarioPorLogin(loginModerador);
+
+        this.communityService.atribuirModerador(user, comunidade, moderador);
+    }
+
+    public String getModeradoresComunidade(String nome) throws ComunidadeNaoExisteException {
+        Comunidade comunidade = this.communityService.getComunidadePorNome(nome);
+        return comunidade.getModeradoresString();
+    }
+
+    public void expulsarMembroComunidade(User executor, String nomeComunidade, String loginMembro)
+            throws ComunidadeNaoExisteException, UsuarioNaoRegistradoException, ModeradorException {
+
+        Comunidade comunidade = this.communityService.getComunidadePorNome(nomeComunidade);
+        User membro = this.userService.getUsuarioPorLogin(loginMembro);
+
+        this.communityService.expulsarMembro(executor, comunidade, membro);
+    }
+
     public String getComunidades(User user) {
         return UtilidadeString.formatArrayList(user.getComunidadesParticipantes());
     }
@@ -135,8 +158,22 @@ public class JackutServicesFacade {
         this.communityService.carregarComunidade(comunidade);
     }
 
-    public void adicionarComunidade(User user, String nomeComunidade)
+//    public void adicionarMembroComunidade(User usuario, Comunidade comunidade)
+//            throws UsuarioJaNaComunidadeException {
+//
+//        // Permite adicionar mesmo se já foi membro antes (para casos de retorno após expulsão)
+//        if (comunidade.getMembros().contains(usuario) ||
+//                usuario.getComunidadesParticipantes().contains(comunidade)) {
+//            throw new UsuarioJaNaComunidadeException();
+//        }
+//
+//        comunidade.adicionarMembro(usuario);
+//        usuario.getComunidadesParticipantes().add(comunidade);
+//    }
+
+    public void adicionarMembroComunidade(User user, String nomeComunidade)
             throws ComunidadeNaoExisteException, UsuarioJaNaComunidadeException {
+
         Comunidade comunidade = this.communityService.getComunidadePorNome(nomeComunidade);
         this.communityService.adicionarMembroComunidade(user, comunidade);
     }

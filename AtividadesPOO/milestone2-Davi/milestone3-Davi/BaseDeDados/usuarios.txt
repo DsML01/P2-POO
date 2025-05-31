@@ -1,1 +1,4 @@
-oabath;abatho;Osorio Abath;{}
+dono;123;Dono;{Comunidade}
+mod;123;Mod;{Comunidade}
+membroExpulso;123;Expulso;{Comunidade}
+membroComum;123;Membro;{Comunidade}
