@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class AuthenticationService {
-    private final Map<String, User> sessoesData; // ID de sessão -> User
+    private final Map<String, User> sessoesData;
     private final UserService userService;
 
     public AuthenticationService(Map<String, User> sessoesData, UserService userService) {
@@ -16,22 +16,23 @@ public class AuthenticationService {
         this.userService = userService;
     }
 
-    public String login(String login, String senha) throws LoginOuSenhaInvalidoException, UsuarioNaoRegistradoException {
-        User user = this.userService.getUsuarioPorLogin(login); // Lança UsuarioNaoRegistradoException se não existir
-
-        if (!user.verificarSenha(senha)) {
-            throw new LoginOuSenhaInvalidoException("Senha inválida."); // Mensagem mais específica
+    public String login(String login, String senha) throws LoginOuSenhaInvalidoException {
+        try {
+            User user = this.userService.getUsuarioPorLogin(login);
+            if (!user.verificarSenha(senha)) {
+                throw new LoginOuSenhaInvalidoException("Login ou senha inválidos.");
+            }
+            String idSessao = UUID.randomUUID().toString();
+            this.sessoesData.put(idSessao, user);
+            return idSessao;
+        } catch (UsuarioNaoRegistradoException e) {
+            throw new LoginOuSenhaInvalidoException("Login ou senha inválidos.");
         }
-
-        String idSessao = UUID.randomUUID().toString();
-        this.sessoesData.put(idSessao, user);
-        return idSessao;
     }
 
-    public User getUsuarioDaSessao(String idSessao) throws UsuarioNaoRegistradoException { // Ou uma SessionNotFoundException
+    public User getUsuarioDaSessao(String idSessao) throws UsuarioNaoRegistradoException {
         if (!this.sessoesData.containsKey(idSessao)) {
-            // Lançar uma exceção mais específica para sessão inválida/expirada seria melhor
-            throw new UsuarioNaoRegistradoException();
+            throw new UsuarioNaoRegistradoException(); // Ou uma exceção de sessão
         }
         return this.sessoesData.get(idSessao);
     }

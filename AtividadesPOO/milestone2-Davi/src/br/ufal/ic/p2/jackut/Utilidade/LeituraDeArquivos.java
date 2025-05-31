@@ -151,6 +151,37 @@ public class LeituraDeArquivos {
      * @param comunidades  Mapa de comunidades.
      */
 
+//    private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
+//        User dono = jackutServicesFacade.getUsuario(dados[0]);
+//        String nome = dados[1];
+//        String descricao = dados[2];
+//
+//        Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
+//
+//        dono.setDonoComunidade(novaComunidade);
+//
+//        String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
+//
+//        for (String membro : membros) {
+//            if (membro.equals(dono.getLogin())) {
+//                continue;
+//            }
+//
+//            novaComunidade.adicionarMembro(jackutServicesFacade.getUsuario(membro));
+//        }
+//
+//        jackutServicesFacade.setComunidade(dono, nome, descricao);
+//
+//        try {
+//            for (String login : comunidades.keySet()) {
+//                User user = jackutServicesFacade.getUsuario(login);
+//                for (String comunidade : comunidades.get(login)) {
+//                    user.setParticipanteComunidade(jackutServicesFacade.getComunidade(comunidade));
+//                }
+//            }
+//        } catch (ComunidadeNaoExisteException e) {}
+//    }
+
     private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
         User dono = jackutServicesFacade.getUsuario(dados[0]);
         String nome = dados[1];
@@ -158,28 +189,45 @@ public class LeituraDeArquivos {
 
         Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
 
+        // O dono já foi adicionado como membro no construtor da Comunidade,
+        // e como participante em registrarNovaComunidade, então vamos garantir a consistência aqui também.
         dono.setDonoComunidade(novaComunidade);
+        // Não precisa chamar dono.setParticipanteComunidade, pois a lógica final do método já fará isso.
 
         String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
 
-        for (String membro : membros) {
-            if (membro.equals(dono.getLogin())) {
+        for (String membroLogin : membros) {
+            if (membroLogin.isEmpty() || membroLogin.equals(dono.getLogin())) {
                 continue;
             }
-
-            novaComunidade.adicionarMembro(jackutServicesFacade.getUsuario(membro));
+            User membro = jackutServicesFacade.getUsuario(membroLogin);
+            novaComunidade.adicionarMembro(membro);
         }
 
-        jackutServicesFacade.setComunidade(dono, nome, descricao);
+        // --- CORREÇÃO AQUI ---
+        // ANTES (INCORRETO):
+        // jackutServicesFacade.setComunidade(dono, nome, descricao);
 
+        // DEPOIS (CORRETO):
+        jackutServicesFacade.carregarComunidade(novaComunidade);
+        // --- FIM DA CORREÇÃO ---
+
+
+        // Esta parte final do seu método agora funcionará corretamente,
+        // pois 'getComunidade' retornará o objeto completo que acabamos de carregar.
         try {
             for (String login : comunidades.keySet()) {
                 User user = jackutServicesFacade.getUsuario(login);
-                for (String comunidade : comunidades.get(login)) {
-                    user.setParticipanteComunidade(jackutServicesFacade.getComunidade(comunidade));
+                for (String comunidadeNome : comunidades.get(login)) {
+                    if(!comunidadeNome.trim().isEmpty()){
+                        Comunidade c = jackutServicesFacade.getComunidade(comunidadeNome);
+                        user.setParticipanteComunidade(c);
+                    }
                 }
             }
-        } catch (ComunidadeNaoExisteException e) {}
+        } catch (ComunidadeNaoExisteException e) {
+            // Este erro não deve mais acontecer para comunidades válidas.
+        }
     }
 
     /**

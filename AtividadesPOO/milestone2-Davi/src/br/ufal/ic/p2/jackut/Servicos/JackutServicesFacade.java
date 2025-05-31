@@ -125,6 +125,12 @@ public class JackutServicesFacade {
         this.communityService.registrarNovaComunidade(dono, nome, descricao);
     }
 
+    // Em br/ufal/ic/p2/jackut/Servicos/JackutServicesFacade.java
+
+    public void carregarComunidade(Comunidade comunidade) {
+        this.communityService.carregarComunidade(comunidade);
+    }
+
     public void adicionarComunidade(User user, String nomeComunidade)
             throws ComunidadeNaoExisteException, UsuarioJaNaComunidadeException, UsuarioNaoRegistradoException {
         Comunidade comunidade = this.communityService.getComunidadePorNome(nomeComunidade);

@@ -26,10 +26,10 @@ public class CommunityService {
         if (this.comunidadesData.containsKey(nome)) {
             throw new ComunidadeJaExisteException();
         }
-        Comunidade comunidade = new Comunidade(dono, nome, descricao); // Dono já é adicionado como membro na entidade
+        Comunidade comunidade = new Comunidade(dono, nome, descricao);
         this.comunidadesData.put(nome, comunidade);
-        dono.setDonoComunidade(comunidade); // User gerencia suas comunidades
-        // dono.setParticipanteComunidade(comunidade); // Já feito no construtor da Comunidade se o dono é membro
+        dono.setDonoComunidade(comunidade);
+        dono.setParticipanteComunidade(comunidade); // Adiciona explicitamente como participante
     }
 
     public Comunidade getComunidadePorNome(String nome) throws ComunidadeNaoExisteException {
@@ -39,12 +39,32 @@ public class CommunityService {
         return this.comunidadesData.get(nome);
     }
 
-    public void adicionarMembroComunidade(User usuario, Comunidade comunidade) throws UsuarioJaNaComunidadeException {
+    public void adicionarMembroComunidade(User usuario, Comunidade comunidade)
+            throws UsuarioJaNaComunidadeException {
+
+        // Verificação igual à versão antiga (mais confiável)
+        if (usuario.getComunidadesParticipantes().contains(comunidade)) {
+            throw new UsuarioJaNaComunidadeException();
+        }
+
+        // Mantém a verificação adicional por segurança
         if (comunidade.getMembros().contains(usuario)) {
             throw new UsuarioJaNaComunidadeException();
         }
+
+        // Adição bidirecional (igual à versão antiga)
         comunidade.adicionarMembro(usuario);
-        usuario.setParticipanteComunidade(comunidade);
+        usuario.getComunidadesParticipantes().add(comunidade);
+
+        // Remove a verificação redundante do dono (já resolvida no construtor da Comunidade)
+    }
+
+    // Em br/ufal/ic/p2/jackut/Servicos/CommunityService.java
+
+    public void carregarComunidade(Comunidade comunidade) {
+        if (!this.comunidadesData.containsKey(comunidade.getNome())) {
+            this.comunidadesData.put(comunidade.getNome(), comunidade);
+        }
     }
 
     public Collection<Comunidade> getAllComunidades() {
