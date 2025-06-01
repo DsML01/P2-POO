@@ -232,7 +232,7 @@ public class LeituraDeArquivos {
         User user = jackutServicesFacade.getUsuario(dados[0]);
         String mensagem = dados[1];
         Mensagem msg = new Mensagem(mensagem);
-        
+
         user.getCaixaDeEntrada().receberMensagem(msg); // DEPOIS
     }
 
