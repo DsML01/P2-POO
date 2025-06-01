@@ -123,17 +123,20 @@ public class EscritaDeArquivos {
      * @param comunidades  Map com as comunidades.
      */
 
+// Utilidade/EscritaDeArquivos.java
     public static void salvarComunidades(Map<String, Comunidade> comunidades) {
         StringBuilder comunidadesData = new StringBuilder();
         for (Comunidade comunidade : comunidades.values()) {
             String membros = comunidade.getMembrosString();
             String moderadores = comunidade.getModeradoresString();
+            String banidos = comunidade.getMembrosBanidosString();
 
             comunidadesData.append(comunidade.getDono().getLogin()).append(";")
                     .append(comunidade.getNome()).append(";")
                     .append(comunidade.getDescricao()).append(";")
                     .append(membros).append(";")
-                    .append(moderadores).append("\n");
+                    .append(moderadores).append(";")
+                    .append(banidos).append("\n");
         }
 
         escreverArquivo("comunidades.txt", comunidadesData.toString());

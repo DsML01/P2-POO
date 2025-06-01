@@ -249,6 +249,54 @@ public class LeituraDeArquivos {
 //        }
 //    }
 
+//    private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
+//        User dono = jackutServicesFacade.getUsuario(dados[0]);
+//        String nome = dados[1];
+//        String descricao = dados[2];
+//
+//        Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
+//
+//        // Membros
+//        String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
+//        for (String membroLogin : membros) {
+//            if (!membroLogin.trim().isEmpty() && !membroLogin.equals(dono.getLogin())) {
+//                novaComunidade.adicionarMembro(jackutServicesFacade.getUsuario(membroLogin.trim()));
+//            }
+//        }
+//
+//        // Moderadores (novo campo)
+//        if (dados.length > 4) {
+//            String[] moderadores = dados[4].substring(1, dados[4].length() - 1).split(",");
+//            for (String moderadorLogin : moderadores) {
+//                if (!moderadorLogin.trim().isEmpty()) {
+//                    novaComunidade.adicionarModerador(jackutServicesFacade.getUsuario(moderadorLogin.trim()));
+//                }
+//            }
+//        }
+//
+//        jackutServicesFacade.carregarComunidade(novaComunidade);
+//
+//
+//        // Esta parte final, que lê os dados de participação do arquivo usuarios.txt, permanece.
+//        // Ela vai garantir que os membros (incluindo o dono) sejam corretamente associados
+//        // às suas comunidades, e o User.setParticipanteComunidade() tem a trava anti-duplicatas.
+//        try {
+//            for (String login : comunidades.keySet()) {
+//                User user = jackutServicesFacade.getUsuario(login);
+//                for (String comunidadeNome : comunidades.get(login)) {
+//                    if(!comunidadeNome.trim().isEmpty()){
+//                        Comunidade c = jackutServicesFacade.getComunidade(comunidadeNome);
+//                        // O método setParticipanteComunidade na classe User deve ter uma verificação
+//                        // "if (list.contains(c)) return;" para ser 100% seguro.
+//                        user.setParticipanteComunidade(c);
+//                    }
+//                }
+//            }
+//        } catch (ComunidadeNaoExisteException e) {
+//            // Tratar exceção, se necessário
+//        }
+//    }
+
     private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
         User dono = jackutServicesFacade.getUsuario(dados[0]);
         String nome = dados[1];
@@ -256,7 +304,7 @@ public class LeituraDeArquivos {
 
         Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
 
-        // Membros
+        // Membros (campo 3)
         String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
         for (String membroLogin : membros) {
             if (!membroLogin.trim().isEmpty() && !membroLogin.equals(dono.getLogin())) {
@@ -264,8 +312,8 @@ public class LeituraDeArquivos {
             }
         }
 
-        // Moderadores (novo campo)
-        if (dados.length > 4) {
+        // Moderadores (campo 4 - opcional)
+        if (dados.length > 4 && !dados[4].isEmpty()) {
             String[] moderadores = dados[4].substring(1, dados[4].length() - 1).split(",");
             for (String moderadorLogin : moderadores) {
                 if (!moderadorLogin.trim().isEmpty()) {
@@ -274,26 +322,46 @@ public class LeituraDeArquivos {
             }
         }
 
+        // Membros banidos (campo 5 - opcional)
+        if (dados.length > 5 && !dados[5].isEmpty()) {
+            String[] banidos = dados[5].substring(1, dados[5].length() - 1).split(",");
+            for (String banidoLogin : banidos) {
+                if (!banidoLogin.trim().isEmpty()) {
+                    User usuarioBanido = jackutServicesFacade.getUsuario(banidoLogin.trim());
+                    // Adiciona à lista de banidos sem verificar duplicatas (o Set já cuida disso)
+                    novaComunidade.getMembrosBanidos().add(usuarioBanido);
+
+                    // Remove da lista de membros ativos se estiver lá
+                    novaComunidade.getMembros().remove(usuarioBanido);
+                    novaComunidade.getModeradores().remove(usuarioBanido);
+                }
+            }
+        }
+
+        // Carrega a comunidade no sistema
         jackutServicesFacade.carregarComunidade(novaComunidade);
 
-
-        // Esta parte final, que lê os dados de participação do arquivo usuarios.txt, permanece.
-        // Ela vai garantir que os membros (incluindo o dono) sejam corretamente associados
-        // às suas comunidades, e o User.setParticipanteComunidade() tem a trava anti-duplicatas.
+        // Associa a comunidade aos usuários (parte de persistência dos usuários)
         try {
             for (String login : comunidades.keySet()) {
                 User user = jackutServicesFacade.getUsuario(login);
                 for (String comunidadeNome : comunidades.get(login)) {
-                    if(!comunidadeNome.trim().isEmpty()){
-                        Comunidade c = jackutServicesFacade.getComunidade(comunidadeNome);
-                        // O método setParticipanteComunidade na classe User deve ter uma verificação
-                        // "if (list.contains(c)) return;" para ser 100% seguro.
-                        user.setParticipanteComunidade(c);
+                    if (!comunidadeNome.trim().isEmpty()) {
+                        try {
+                            Comunidade c = jackutServicesFacade.getComunidade(comunidadeNome);
+
+                            // Verifica se o usuário não está banido antes de adicionar
+                            if (!c.getMembrosBanidos().contains(user)) {
+                                user.setParticipanteComunidade(c);
+                            }
+                        } catch (ComunidadeNaoExisteException e) {
+                            //System.err.println("Comunidade não encontrada: " + comunidadeNome);
+                        }
                     }
                 }
             }
-        } catch (ComunidadeNaoExisteException e) {
-            // Tratar exceção, se necessário
+        } catch (Exception e) {
+            System.err.println("Erro ao associar comunidades aos usuários: " + e.getMessage());
         }
     }
 

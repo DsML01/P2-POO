@@ -15,6 +15,39 @@ public class Comunidade {
     private final String nome;
     private final String descricao;
     private final ArrayList<User> membros = new ArrayList<>();
+    private final ArrayList<User> membrosBanidos = new ArrayList<>();
+
+    public void banirMembro(User membro) throws ModeradorException {
+        if (membro.equals(this.dono)) {
+            throw new ModeradorException("Não é possível banir o dono da comunidade.");
+        }
+
+        this.membros.remove(membro);
+        this.moderadores.remove(membro);
+        if (!this.membrosBanidos.contains(membro)) {
+            this.membrosBanidos.add(membro);
+        }
+    }
+
+    public void desbanirMembro(User membro) throws ModeradorException {
+        if (!this.membrosBanidos.contains(membro)) {
+            throw new ModeradorException("Usuário não está banido desta comunidade.");
+        }
+        this.membrosBanidos.remove(membro);
+    }
+
+    public boolean isBanido(User user) {
+        return this.membrosBanidos.contains(user);
+    }
+
+    public String getMembrosBanidosString() {
+        return UtilidadeString.formatArrayList(this.membrosBanidos);
+    }
+
+    public ArrayList<User> getMembrosBanidos() {
+        return this.membrosBanidos;
+    }
+
 
     /**
      * Cria uma nova Comunidade

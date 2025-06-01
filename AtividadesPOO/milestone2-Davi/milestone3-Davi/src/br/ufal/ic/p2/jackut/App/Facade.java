@@ -274,7 +274,7 @@ public class Facade {
      * Adiciona o usuário com a sessão aberta identificada por id à comunidade especificada.
      *
      * @param id    ID da sessão
-     * @param nome  Nome da comunidade
+     * @param nomeComunidade  Nome da comunidade
      *
      * @throws UsuarioNaoRegistradoException       Exceção lançada caso o usuário não esteja cadastrado
      * @throws ComunidadeNaoExisteException        Exceção lançada caso a comunidade não exista
@@ -282,10 +282,28 @@ public class Facade {
      */
 // Na classe Facade (App/Facade.java)
     public void adicionarComunidade(String id, String nomeComunidade)
-            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, UsuarioJaNaComunidadeException {
+            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, UsuarioJaNaComunidadeException, ModeradorException {
 
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         this.jackutServicesFacade.adicionarMembroComunidade(user, nomeComunidade);
+    }
+
+    public void banirMembroComunidade(String id, String comunidade, String loginMembro)
+            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
+
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        this.jackutServicesFacade.banirMembroComunidade(user, comunidade, loginMembro);
+    }
+
+    public void desbanirMembroComunidade(String id, String comunidade, String loginMembro)
+            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
+
+        User user = this.jackutServicesFacade.getSessaoUsuario(id);
+        this.jackutServicesFacade.desbanirMembroComunidade(user, comunidade, loginMembro);
+    }
+
+    public String getMembrosBanidosComunidade(String nome) throws ComunidadeNaoExisteException {
+        return this.jackutServicesFacade.getMembrosBanidosComunidade(nome);
     }
 
     /**

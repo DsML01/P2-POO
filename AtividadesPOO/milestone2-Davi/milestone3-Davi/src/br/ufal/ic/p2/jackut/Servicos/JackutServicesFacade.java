@@ -172,7 +172,7 @@ public class JackutServicesFacade {
 //    }
 
     public void adicionarMembroComunidade(User user, String nomeComunidade)
-            throws ComunidadeNaoExisteException, UsuarioJaNaComunidadeException {
+            throws ComunidadeNaoExisteException, UsuarioJaNaComunidadeException, ModeradorException {
 
         Comunidade comunidade = this.communityService.getComunidadePorNome(nomeComunidade);
         this.communityService.adicionarMembroComunidade(user, comunidade);
@@ -247,6 +247,35 @@ public class JackutServicesFacade {
         this.messageService.removerTodasMensagensDeOuPara(user, this.userService.getAllUsers());
 
         this.userService.deletarUsuario(user);
+    }
+
+    public void banirMembroComunidade(User executor, String nomeComunidade, String loginMembro)
+            throws ComunidadeNaoExisteException, UsuarioNaoRegistradoException, ModeradorException {
+
+        Comunidade comunidade = this.communityService.getComunidadePorNome(nomeComunidade);
+        User membro = this.userService.getUsuarioPorLogin(loginMembro);
+        this.communityService.banirMembro(executor, comunidade, membro);
+    }
+
+    public void desbanirMembroComunidade(User executor, String nomeComunidade, String loginMembro)
+            throws ComunidadeNaoExisteException, UsuarioNaoRegistradoException, ModeradorException {
+
+        Comunidade comunidade = this.communityService.getComunidadePorNome(nomeComunidade);
+        User membro = this.userService.getUsuarioPorLogin(loginMembro);
+        this.communityService.desbanirMembro(executor, comunidade, membro);
+    }
+
+    public String getMembrosBanidosComunidade(String nome) throws ComunidadeNaoExisteException {
+        Comunidade comunidade = this.communityService.getComunidadePorNome(nome);
+        return comunidade.getMembrosBanidosString();
+    }
+
+    // Atualize o método adicionarMembroComunidade para verificar banimentos
+    public void adicionarMembroComunidade(User usuario, Comunidade comunidade)
+            throws UsuarioJaNaComunidadeException, ModeradorException {
+
+        this.communityService.verificarBanimento(usuario, comunidade);
+        this.communityService.adicionarMembroComunidade(usuario, comunidade);
     }
 
     /**

@@ -77,14 +77,61 @@ public class CommunityService {
      * @throws UsuarioJaNaComunidadeException se o usuário já for membro da comunidade.
      */
     public void adicionarMembroComunidade(User usuario, Comunidade comunidade)
-            throws UsuarioJaNaComunidadeException {
+            throws UsuarioJaNaComunidadeException, ModeradorException {
 
-        if (usuario.getComunidadesParticipantes().contains(comunidade) || comunidade.getMembros().contains(usuario)) {
+        // Verifica se o usuário está banido (correção aqui)
+        if (comunidade.getMembrosBanidos().contains(usuario)) {
+            throw new ModeradorException("Usuário está banido desta comunidade.");
+        }
+
+        if (comunidade.getMembros().contains(usuario) ||
+                usuario.getComunidadesParticipantes().contains(comunidade)) {
             throw new UsuarioJaNaComunidadeException();
         }
 
         comunidade.adicionarMembro(usuario);
         usuario.getComunidadesParticipantes().add(comunidade);
+    }
+
+    public void banirMembro(User executor, Comunidade comunidade, User membro)
+            throws ModeradorException, UsuarioNaoRegistradoException {
+
+        // Verifica permissões
+        if (!comunidade.getDono().equals(executor) && !comunidade.isModerador(executor)) {
+            throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
+        }
+
+        // Verifica se está tentando banir a si mesmo
+        if (executor.equals(membro)) {
+            throw new ModeradorException("Não é possível banir a si mesmo.");
+        }
+
+        // Verifica se é membro
+        if (!comunidade.isMembro(membro)) {
+            throw new ModeradorException("Usuário não é membro da comunidade.");
+        }
+
+        // Executa o banimento
+        comunidade.banirMembro(membro);
+        membro.sairComunidade(comunidade);
+    }
+
+    public void desbanirMembro(User executor, Comunidade comunidade, User membro)
+            throws ModeradorException, UsuarioNaoRegistradoException {
+
+        // Verifica permissões
+        if (!comunidade.getDono().equals(executor) && !comunidade.isModerador(executor)) {
+            throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
+        }
+
+        // Executa o desbanimento
+        comunidade.desbanirMembro(membro);
+    }
+
+    public void verificarBanimento(User user, Comunidade comunidade) throws ModeradorException {
+        if (comunidade.isBanido(user)) {
+            throw new ModeradorException("Usuário está banido desta comunidade.");
+        }
     }
 
     /**
