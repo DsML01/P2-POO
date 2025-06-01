@@ -26,8 +26,8 @@ public class CommunityService {
     /**
      * Constrói uma nova instância de CommunityService.
      *
-     * @param comunidadesData Mapa para armazenar as comunidades existentes (Nome -> Comunidade).
-     * @param userService     Serviço de usuário para interações e validações.
+     * @param comunidadesData Mapa para armazenar as comunidades existentes (Nome -> Comunidade)
+     * @param userService Serviço de usuário para interações e validações
      */
     public CommunityService(Map<String, Comunidade> comunidadesData, UserService userService) {
         this.comunidadesData = comunidadesData;
@@ -38,10 +38,10 @@ public class CommunityService {
      * Cria e registra uma nova comunidade no sistema.
      * O dono é automaticamente adicionado como o primeiro membro.
      *
-     * @param dono      O usuário que será o dono da comunidade.
-     * @param nome      O nome da comunidade (deve ser único).
-     * @param descricao A descrição da comunidade.
-     * @throws ComunidadeJaExisteException se uma comunidade com o mesmo nome já existir.
+     * @param dono Usuário que será o dono da comunidade
+     * @param nome Nome da comunidade (deve ser único)
+     * @param descricao Descrição da comunidade
+     * @throws ComunidadeJaExisteException se uma comunidade com o mesmo nome já existir
      */
     public void registrarNovaComunidade(User dono, String nome, String descricao) throws ComunidadeJaExisteException {
         if (this.comunidadesData.containsKey(nome)) {
@@ -56,9 +56,9 @@ public class CommunityService {
     /**
      * Busca e retorna uma comunidade pelo seu nome.
      *
-     * @param nome O nome da comunidade.
-     * @return O objeto {@link Comunidade} correspondente.
-     * @throws ComunidadeNaoExisteException se nenhuma comunidade com o nome especificado for encontrada.
+     * @param nome Nome da comunidade
+     * @return Objeto Comunidade correspondente
+     * @throws ComunidadeNaoExisteException se nenhuma comunidade com o nome especificado for encontrada
      */
     public Comunidade getComunidadePorNome(String nome) throws ComunidadeNaoExisteException {
         if (!this.comunidadesData.containsKey(nome)) {
@@ -72,14 +72,14 @@ public class CommunityService {
      * A adição é bidirecional: o usuário é adicionado à lista de membros da comunidade,
      * e a comunidade é adicionada à lista de participações do usuário.
      *
-     * @param usuario    O usuário a ser adicionado.
-     * @param comunidade A comunidade à qual o usuário se juntará.
-     * @throws UsuarioJaNaComunidadeException se o usuário já for membro da comunidade.
+     * @param usuario Usuário a ser adicionado
+     * @param comunidade Comunidade à qual o usuário se juntará
+     * @throws UsuarioJaNaComunidadeException se o usuário já for membro da comunidade
+     * @throws ModeradorException se o usuário estiver banido da comunidade
      */
     public void adicionarMembroComunidade(User usuario, Comunidade comunidade)
             throws UsuarioJaNaComunidadeException, ModeradorException {
 
-        // Verifica se o usuário está banido (correção aqui)
         if (comunidade.getMembrosBanidos().contains(usuario)) {
             throw new ModeradorException("Usuário está banido desta comunidade.");
         }
@@ -93,41 +93,60 @@ public class CommunityService {
         usuario.getComunidadesParticipantes().add(comunidade);
     }
 
+    /**
+     * Banir um membro de uma comunidade.
+     *
+     * @param executor Usuário que está executando a ação
+     * @param comunidade Comunidade da qual o membro será banido
+     * @param membro Membro a ser banido
+     * @throws ModeradorException se o executor não tiver permissão ou tentar banir a si mesmo
+     * @throws UsuarioNaoRegistradoException se o membro não for membro da comunidade
+     */
     public void banirMembro(User executor, Comunidade comunidade, User membro)
             throws ModeradorException, UsuarioNaoRegistradoException {
 
-        // Verifica permissões
         if (!comunidade.getDono().equals(executor) && !comunidade.isModerador(executor)) {
             throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
         }
 
-        // Verifica se está tentando banir a si mesmo
         if (executor.equals(membro)) {
             throw new ModeradorException("Não é possível banir a si mesmo.");
         }
 
-        // Verifica se é membro
         if (!comunidade.isMembro(membro)) {
             throw new ModeradorException("Usuário não é membro da comunidade.");
         }
 
-        // Executa o banimento
         comunidade.banirMembro(membro);
         membro.sairComunidade(comunidade);
     }
 
+    /**
+     * Desbanir um membro de uma comunidade.
+     *
+     * @param executor Usuário que está executando a ação
+     * @param comunidade Comunidade da qual o membro será desbanido
+     * @param membro Membro a ser desbanido
+     * @throws ModeradorException se o executor não tiver permissão
+     * @throws UsuarioNaoRegistradoException se o membro não estiver banido
+     */
     public void desbanirMembro(User executor, Comunidade comunidade, User membro)
             throws ModeradorException, UsuarioNaoRegistradoException {
 
-        // Verifica permissões
         if (!comunidade.getDono().equals(executor) && !comunidade.isModerador(executor)) {
             throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
         }
 
-        // Executa o desbanimento
         comunidade.desbanirMembro(membro);
     }
 
+    /**
+     * Verifica se um usuário está banido de uma comunidade.
+     *
+     * @param user Usuário a ser verificado
+     * @param comunidade Comunidade a ser verificada
+     * @throws ModeradorException se o usuário estiver banido
+     */
     public void verificarBanimento(User user, Comunidade comunidade) throws ModeradorException {
         if (comunidade.isBanido(user)) {
             throw new ModeradorException("Usuário está banido desta comunidade.");
@@ -138,7 +157,7 @@ public class CommunityService {
      * Carrega um objeto de comunidade pré-existente no mapa de dados em memória.
      * Usado principalmente durante a inicialização do sistema a partir da persistência.
      *
-     * @param comunidade O objeto {@link Comunidade} a ser carregado.
+     * @param comunidade Objeto Comunidade a ser carregado
      */
     public void carregarComunidade(Comunidade comunidade) {
         if (!this.comunidadesData.containsKey(comunidade.getNome())) {
@@ -146,20 +165,26 @@ public class CommunityService {
         }
     }
 
+    /**
+     * Atribui um moderador a uma comunidade.
+     *
+     * @param user Usuário que está executando a ação
+     * @param comunidade Comunidade que terá o novo moderador
+     * @param moderador Usuário a ser tornado moderador
+     * @throws ModeradorException se o executor não tiver permissão ou se o usuário já for moderador
+     * @throws UsuarioNaoRegistradoException se o usuário não for membro da comunidade
+     */
     public void atribuirModerador(User user, Comunidade comunidade, User moderador)
             throws ModeradorException, UsuarioNaoRegistradoException {
 
-        // Verifica se o usuário tem permissão (dono ou moderador)
         if (!comunidade.getDono().equals(user) && !comunidade.isModerador(user)) {
             throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
         }
 
-        // Verifica se o alvo é membro da comunidade
         if (!comunidade.getMembros().contains(moderador)) {
             throw new ModeradorException("Usuário não é membro da comunidade.");
         }
 
-        // Verifica se já é moderador
         if (comunidade.isModerador(moderador)) {
             throw new ModeradorException("Usuário já é moderador.");
         }
@@ -170,29 +195,33 @@ public class CommunityService {
     /**
      * Retorna uma coleção com todas as comunidades registradas no sistema.
      *
-     * @return Uma {@link Collection} de objetos {@link Comunidade}.
+     * @return Coleção de objetos Comunidade
      */
     public Collection<Comunidade> getAllComunidades() {
         return this.comunidadesData.values();
     }
 
+    /**
+     * Expulsa um membro de uma comunidade.
+     *
+     * @param executor Usuário que está executando a ação
+     * @param comunidade Comunidade da qual o membro será expulso
+     * @param membro Membro a ser expulso
+     * @throws ModeradorException se o executor não tiver permissão ou se o membro não existir
+     * @throws UsuarioNaoRegistradoException se o membro não for membro da comunidade
+     */
     public void expulsarMembro(User executor, Comunidade comunidade, User membro)
             throws ModeradorException, UsuarioNaoRegistradoException {
 
-        // Verifica permissões (dono ou moderador)
         if (!comunidade.getDono().equals(executor) && !comunidade.isModerador(executor)) {
             throw new ModeradorException("Apenas o dono ou moderadores podem realizar esta ação.");
         }
 
-        // Verifica se o usuário é membro
         if (!comunidade.isMembro(membro)) {
             throw new ModeradorException("Usuário não é membro da comunidade.");
         }
 
-        // Remove o membro
         comunidade.removerMembro(membro);
-
-        // Remove das comunidades do usuário
         membro.sairComunidade(comunidade);
     }
 
@@ -201,7 +230,7 @@ public class CommunityService {
      * Nota: A lógica para lidar com a remoção de uma comunidade se o usuário for o dono
      * é gerenciada em um nível superior (Facade).
      *
-     * @param usuario O usuário a ser removido das comunidades.
+     * @param usuario Usuário a ser removido das comunidades
      */
     public void removerUsuarioDeTodasComunidades(User usuario) {
         for (Comunidade comunidade : this.comunidadesData.values()) {
@@ -215,8 +244,8 @@ public class CommunityService {
     /**
      * Remove permanentemente uma comunidade do sistema e desvincula todos os seus membros.
      *
-     * @param nomeComunidade O nome da comunidade a ser removida.
-     * @throws ComunidadeNaoExisteException se a comunidade não for encontrada.
+     * @param nomeComunidade Nome da comunidade a ser removida
+     * @throws ComunidadeNaoExisteException se a comunidade não for encontrada
      */
     public void removerComunidade(String nomeComunidade) throws ComunidadeNaoExisteException {
         if (!this.comunidadesData.containsKey(nomeComunidade)) {

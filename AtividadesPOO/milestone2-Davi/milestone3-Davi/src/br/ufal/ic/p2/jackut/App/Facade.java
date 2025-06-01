@@ -4,503 +4,474 @@ import br.ufal.ic.p2.jackut.Entidades.User;
 import br.ufal.ic.p2.jackut.Exceptions.Recado.SemRecadosException;
 import br.ufal.ic.p2.jackut.Servicos.JackutServicesFacade;
 import br.ufal.ic.p2.jackut.Entidades.*;
-
 import br.ufal.ic.p2.jackut.Exceptions.Usuario.*;
 import br.ufal.ic.p2.jackut.Exceptions.Sistema.*;
 import br.ufal.ic.p2.jackut.Exceptions.Recado.*;
 import br.ufal.ic.p2.jackut.Exceptions.Perfil.*;
 import br.ufal.ic.p2.jackut.Exceptions.Comunidade.*;
-
 import br.ufal.ic.p2.jackut.Utilidade.*;
 
-
 /**
- * Classe Facade que implementa a interface do sistema.
+ * Fachada principal do sistema Jackut que implementa todas as operações disponíveis para os usuários.
+ * <p>
+ * Esta classe atua como um ponto único de acesso para todas as funcionalidades do sistema,
+ * delegando as operações para os serviços internos.
+ * </p>
+ *
+ * @author Davi
  */
-
 public class Facade {
     private final JackutServicesFacade jackutServicesFacade = new JackutServicesFacade();
 
     /**
      * Apaga todos os dados mantidos no sistema.
-     *
-     * @see JackutServicesFacade
      */
-
     public void zerarSistema() {
         this.jackutServicesFacade.zerarSistema();
     }
 
     /**
-     * Cria um usuário com os dados da conta fornecidos.
+     * Cria um novo usuário no sistema.
      *
-     * @param login  Login do usuário
-     * @param senha  Senha do usuário
-     * @param nome   Nome do usuário
-     *
-     * @throws LoginOuSenhaInvalidoException  Exceção lançada caso o login ou a senha sejam inválidos
-     * @throws ContaJaExisteException        Exceção lançada caso o login já esteja cadastrado
-     * 
-     * @see User
+     * @param login Login do novo usuário
+     * @param senha Senha do novo usuário
+     * @param nome Nome completo do usuário
+     * @throws LoginOuSenhaInvalidoException Se login ou senha forem inválidos
+     * @throws ContaJaExisteException Se o login já estiver em uso
      */
-
-    public void criarUsuario(String login, String senha, String nome) throws LoginOuSenhaInvalidoException, ContaJaExisteException {
+    public void criarUsuario(String login, String senha, String nome)
+            throws LoginOuSenhaInvalidoException, ContaJaExisteException {
         User user = new User(login, senha, nome);
-
         this.jackutServicesFacade.setUsuario(user);
     }
 
     /**
-     * Abre uma sessão para um usuário com o login e a senha fornecidos,
-     * e retorna uma id para esta sessão.
+     * Autentica um usuário e inicia uma nova sessão.
      *
-     * @param login  Login do usuário
-     * @param senha  Senha do usuário
-     * @return       ID da sessão
-     *
-     * @throws LoginOuSenhaInvalidoException   Exceção lançada caso o login ou a senha sejam inválidos
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário não esteja cadastrado
+     * @param login Login do usuário
+     * @param senha Senha do usuário
+     * @return ID da sessão criada
+     * @throws LoginOuSenhaInvalidoException Se as credenciais forem inválidas
+     * @throws UsuarioNaoRegistradoException Se o usuário não existir
      */
-
-    public String abrirSessao(String login, String senha) throws LoginOuSenhaInvalidoException, UsuarioNaoRegistradoException {
+    public String abrirSessao(String login, String senha)
+            throws LoginOuSenhaInvalidoException, UsuarioNaoRegistradoException {
         return this.jackutServicesFacade.abrirSessao(login, senha);
     }
 
     /**
-     * Retorna o valor do atributo de um usuário, armazenado em seu perfil.
+     * Obtém um atributo do perfil de um usuário.
      *
-     * @param login     Login do usuário
-     * @param atributo  Atributo a ser retornado
-     * @return          Valor do atributo
-     *
-     * @throws UsuarioNaoRegistradoException   Exceção lançada caso o usuário não esteja cadastrado
-     * @throws AtributoNaoPreenchidoException  Exceção lançada caso o atributo não esteja preenchido
+     * @param login Login do usuário
+     * @param atributo Nome do atributo
+     * @return Valor do atributo
+     * @throws UsuarioNaoRegistradoException Se o usuário não existir
+     * @throws AtributoNaoPreenchidoException Se o atributo não estiver definido
      */
-
     public String getAtributoUsuario(String login, String atributo)
             throws UsuarioNaoRegistradoException, AtributoNaoPreenchidoException {
         User user = this.jackutServicesFacade.getUsuario(login);
-
         return user.getAtributo(atributo);
     }
 
     /**
-     * Modifica o valor de um atributo do perfil de um usuário para o valor especificado.
-     * Uma sessão válida <b>(identificada por id)</b> deve estar aberta para o usuário
-     * cujo perfil se quer editar
+     * Modifica um atributo do perfil do usuário.
      *
-     * @param id        ID da sessão
-     * @param atributo  Atributo a ser modificado
-     * @param valor     Novo valor do atributo
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso o usuário não esteja cadastrado
+     * @param id ID da sessão
+     * @param atributo Nome do atributo
+     * @param valor Novo valor
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
      */
-
     public void editarPerfil(String id, String atributo, String valor)
             throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
-
         user.getPerfil().setAtributo(atributo, valor);
     }
 
     /**
-     * Adiciona um amigo ao usuário aberto na sessão especificada através de id.
+     * Adiciona um amigo ao usuário.
      *
-     * @param id     ID da sessão
-     * @param amigo  Login do amigo a ser adicionado
-     *
-     * @throws UsuarioJaTemRelacaoException        Exceção lançada caso o usuário já seja amigo do usuário aberto na sessão
-     * @throws UsuarioNaoRegistradoException       Exceção lançada caso o usuário ou o amigo não estejam cadastrados
-     * @throws UsuarioRelacaoParaSiException         Exceção lançada caso o usuário tente adicionar a si mesmo como amigo
-     * @throws UsuarioJaPediuSolicitacaoException  Exceção lançada caso o usuário já tenha solicitado amizade ao amigo
+     * @param id ID da sessão
+     * @param amigo Login do amigo
+     * @throws UsuarioJaTemRelacaoException Se já forem amigos
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws UsuarioRelacaoParaSiException Se tentar adicionar a si mesmo
+     * @throws UsuarioJaPediuSolicitacaoException Se já houver solicitação pendente
+     * @throws UsuarioEhInimigoException Se os usuários forem inimigos
      */
-
-    public void adicionarAmigo(String id, String amigo) throws UsuarioJaTemRelacaoException, UsuarioNaoRegistradoException,
+    public void adicionarAmigo(String id, String amigo)
+            throws UsuarioJaTemRelacaoException, UsuarioNaoRegistradoException,
             UsuarioRelacaoParaSiException, UsuarioJaPediuSolicitacaoException, UsuarioEhInimigoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         User amigoUser = this.jackutServicesFacade.getUsuario(amigo);
-
         this.jackutServicesFacade.adicionarAmigo(user, amigoUser);
     }
 
     /**
-     * Retorna true se os dois usuários são amigos.
+     * Verifica se dois usuários são amigos.
      *
-     * @param login   Login do primeiro usuário
-     * @param amigo   Login do segundo usuário
-     * @return        Booleano indicando se os usuários são amigos
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso um dos usuários não esteja cadastrado
+     * @param login Login do primeiro usuário
+     * @param amigo Login do segundo usuário
+     * @return true se forem amigos
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
      */
-
     public boolean ehAmigo(String login, String amigo) throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getUsuario(login);
         User amigoUser = this.jackutServicesFacade.getUsuario(amigo);
-
         return user.getAmigos().contains(amigoUser);
     }
 
     /**
-     * Retorna a lista de amigos do usuário especificado.
+     * Obtém a lista de amigos de um usuário.
      *
-     * @param login  Login do usuário
-     * @return       Lista de amigos do usuário formatada em uma String
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso o usuário não esteja cadastrado
-     *
-     * @see UtilidadeString
+     * @param login Login do usuário
+     * @return Lista de amigos formatada
+     * @throws UsuarioNaoRegistradoException Se o usuário não existir
      */
-
     public String getAmigos(String login) throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getUsuario(login);
-
         return user.getAmigosString();
     }
 
     /**
-     * Envia o recado especificado ao destinatário especificado.
-     * Uma sessão válida <b>(identificada por id)</b> deve estar aberta
-     * para o usuário que deseja enviar o recado.
+     * Envia um recado para outro usuário.
      *
-     * @param id            ID da sessão
-     * @param destinatario  Login do destinatário
-     * @param recado        Recado a ser enviado
-     *
-     * @throws UsuarioNaoRegistradoException    Exceção lançada caso o usuário ou o destinatário não estejam cadastrados
-     * @throws MensagemParaSiException  Exceção lançada caso o usuário tente enviar um recado para si mesmo
+     * @param id ID da sessão
+     * @param destinatario Login do destinatário
+     * @param recado Texto do recado
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws MensagemParaSiException Se tentar enviar para si mesmo
+     * @throws UsuarioEhInimigoException Se os usuários forem inimigos
      */
-
-    public void enviarRecado(String id, String destinatario, String recado) throws UsuarioNaoRegistradoException, MensagemParaSiException, UsuarioEhInimigoException {
+    public void enviarRecado(String id, String destinatario, String recado)
+            throws UsuarioNaoRegistradoException, MensagemParaSiException, UsuarioEhInimigoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         User destinatarioUser = this.jackutServicesFacade.getUsuario(destinatario);
-
         this.jackutServicesFacade.enviarRecado(user, destinatarioUser, recado);
     }
 
     /**
-     * Retorna o primeiro recado da fila de recados do usuário com a sessão aberta
-     * identificada por id.
+     * Lê o próximo recado na fila do usuário.
      *
-     * @param id  ID da sessão
-     * @return    Primeiro recado da fila de recados do usuário
-     *
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário não esteja cadastrado
-     * @throws SemRecadosException          Exceção lançada caso o usuário não tenha recados na fila
+     * @param id ID da sessão
+     * @return Texto do recado
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
+     * @throws SemRecadosException Se não houver recados
      */
-
     public String lerRecado(String id) throws UsuarioNaoRegistradoException, SemRecadosException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
-
         return this.jackutServicesFacade.lerRecado(user);
     }
 
     /**
-     * Cria uma comunidade com os dados fornecidos.
+     * Cria uma nova comunidade.
      *
-     * @param id         ID da sessão
-     * @param nome       Nome da comunidade
-     * @param descricao  Descrição da comunidade
-     *
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário não esteja cadastrado
-     * @throws ComunidadeJaExisteException    Exceção lançada caso a comunidade já exista
+     * @param id ID da sessão
+     * @param nome Nome da comunidade
+     * @param descricao Descrição da comunidade
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
+     * @throws ComunidadeJaExisteException Se a comunidade já existir
      */
-
     public void criarComunidade(String id, String nome, String descricao)
             throws UsuarioNaoRegistradoException, ComunidadeJaExisteException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
-
         jackutServicesFacade.setComunidade(user, nome, descricao);
     }
 
     /**
-     * Retorna a descrição da comunidade especificada.
+     * Obtém a descrição de uma comunidade.
      *
-     * @param nome  Nome da comunidade
-     * @return      Descrição da comunidade
-     *
-     * @throws ComunidadeNaoExisteException Exceção lançada caso a comunidade não exista
+     * @param nome Nome da comunidade
+     * @return Descrição da comunidade
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
      */
-
     public String getDescricaoComunidade(String nome) throws ComunidadeNaoExisteException {
         return this.jackutServicesFacade.getDescricaoComunidade(nome);
     }
 
     /**
-     * Retorna o dono da comunidade especificada.
+     * Obtém o dono de uma comunidade.
      *
-     * @param nome  Nome da comunidade
-     * @return      Dono da comunidade
-     *
-     * @throws ComunidadeNaoExisteException Exceção lançada caso a comunidade não exista
+     * @param nome Nome da comunidade
+     * @return Login do dono
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
      */
-
     public String getDonoComunidade(String nome) throws ComunidadeNaoExisteException {
         return this.jackutServicesFacade.getDonoComunidade(nome);
     }
 
     /**
-     * Retorna a lista de membros da comunidade especificada.
+     * Obtém os membros de uma comunidade.
      *
-     * @param nome  Nome da comunidade
-     * @return      Lista de membros da comunidade formatada em uma String
-     *
-     * @throws ComunidadeNaoExisteException Exceção lançada caso a comunidade não exista
-     *
-     * @see UtilidadeString
+     * @param nome Nome da comunidade
+     * @return Lista de membros formatada
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
      */
-
     public String getMembrosComunidade(String nome) throws ComunidadeNaoExisteException {
         return this.jackutServicesFacade.getMembrosComunidade(nome);
     }
 
     /**
-     * Retorna a lista de comunidades do usuário especificado.
+     * Obtém as comunidades de um usuário.
      *
-     * @param login  Login do usuário
-     * @return       Lista de comunidades do usuário formatada em uma String
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso o usuário não esteja cadastrado
-     *
-     * @see UtilidadeString
+     * @param login Login do usuário
+     * @return Lista de comunidades formatada
+     * @throws UsuarioNaoRegistradoException Se o usuário não existir
      */
-
     public String getComunidades(String login) throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getUsuario(login);
-
         return this.jackutServicesFacade.getComunidades(user);
     }
 
     /**
-     * Adiciona o usuário com a sessão aberta identificada por id à comunidade especificada.
+     * Adiciona um usuário a uma comunidade.
      *
-     * @param id    ID da sessão
-     * @param nomeComunidade  Nome da comunidade
-     *
-     * @throws UsuarioNaoRegistradoException       Exceção lançada caso o usuário não esteja cadastrado
-     * @throws ComunidadeNaoExisteException        Exceção lançada caso a comunidade não exista
-     * @throws UsuarioJaNaComunidadeException  Exceção lançada caso o usuário já esteja na comunidade
+     * @param id ID da sessão
+     * @param nomeComunidade Nome da comunidade
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
+     * @throws UsuarioJaNaComunidadeException Se o usuário já for membro
+     * @throws ModeradorException Se o usuário estiver banido
      */
-// Na classe Facade (App/Facade.java)
     public void adicionarComunidade(String id, String nomeComunidade)
-            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, UsuarioJaNaComunidadeException, ModeradorException {
-
+            throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException,
+            UsuarioJaNaComunidadeException, ModeradorException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         this.jackutServicesFacade.adicionarMembroComunidade(user, nomeComunidade);
     }
 
+    /**
+     * Bane um membro de uma comunidade.
+     *
+     * @param id ID da sessão
+     * @param comunidade Nome da comunidade
+     * @param loginMembro Login do membro a banir
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
+     * @throws ModeradorException Se não tiver permissão
+     */
     public void banirMembroComunidade(String id, String comunidade, String loginMembro)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
-
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         this.jackutServicesFacade.banirMembroComunidade(user, comunidade, loginMembro);
     }
 
+    /**
+     * Remove o banimento de um membro.
+     *
+     * @param id ID da sessão
+     * @param comunidade Nome da comunidade
+     * @param loginMembro Login do membro
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
+     * @throws ModeradorException Se não tiver permissão
+     */
     public void desbanirMembroComunidade(String id, String comunidade, String loginMembro)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
-
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         this.jackutServicesFacade.desbanirMembroComunidade(user, comunidade, loginMembro);
     }
 
+    /**
+     * Obtém os membros banidos de uma comunidade.
+     *
+     * @param nome Nome da comunidade
+     * @return Lista de banidos formatada
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
+     */
     public String getMembrosBanidosComunidade(String nome) throws ComunidadeNaoExisteException {
         return this.jackutServicesFacade.getMembrosBanidosComunidade(nome);
     }
 
     /**
-     * Lê a primeira mensagem da fila de mensagens do usuário com a sessão aberta.
+     * Lê a próxima mensagem da comunidade.
      *
-     * @param id  ID da sessão
-     * @return    Primeira mensagem da fila de mensagens do usuário
-     *
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário não esteja cadastrado
-     * @throws SemMensagensException        Exceção lançada caso o usuário não tenha mensagens na fila
+     * @param id ID da sessão
+     * @return Texto da mensagem
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
+     * @throws SemMensagensException Se não houver mensagens
      */
-
     public String lerMensagem(String id) throws UsuarioNaoRegistradoException, SemMensagensException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
-
         return this.jackutServicesFacade.lerMensagem(user);
     }
 
     /**
-     * Envia uma mensagem de um usuário com sessão aberta à comunidade especificada.
+     * Envia uma mensagem para uma comunidade.
      *
-     * @param id          ID da sessão
-     * @param comunidade  Nome da comunidade
-     * @param mensagem    Mensagem a ser enviada
-     *
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário não esteja cadastrado
-     * @throws ComunidadeNaoExisteException   Exceção lançada caso a comunidade não exista
+     * @param id ID da sessão
+     * @param comunidade Nome da comunidade
+     * @param mensagem Texto da mensagem
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
      */
-
     public void enviarMensagem(String id, String comunidade, String mensagem)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException {
         this.jackutServicesFacade.getSessaoUsuario(id);
         Comunidade comunidadeAlvo = this.jackutServicesFacade.getComunidade(comunidade);
-
         this.jackutServicesFacade.enviarMensagem(comunidadeAlvo, mensagem);
     }
 
     /**
-     * Retorna true se o usuário com a sessão aberta identificada por id é fã do usuário especificado.
+     * Verifica se um usuário é fã de outro.
      *
-     * @param login       Login do usuário
-     * @param loginIdolo  Login do ídolo
-     * @return            Booleano indicando se o usuário é fã do ídolo
+     * @param login Login do usuário
+     * @param loginIdolo Login do ídolo
+     * @return true se for fã
      */
     public boolean ehFa(String login, String loginIdolo) {
         User user = this.jackutServicesFacade.getUsuario(login);
         User idolo = this.jackutServicesFacade.getUsuario(loginIdolo);
-
         return idolo.getFas().contains(user);
     }
 
     /**
-     * Adiciona um ídolo ao usuário com a sessão aberta identificada por id.
+     * Adiciona um ídolo ao usuário.
      *
-     * @param id          ID da sessão
-     * @param loginIdolo  Login do ídolo
-     *
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário ou o ídolo não estejam cadastrados
-     * @throws UsuarioJaTemRelacaoException   Exceção lançada caso o usuário já seja ídolo do ídolo
-     * @throws UsuarioRelacaoParaSiException    Exceção lançada caso o usuário tente adicionar a si mesmo como ídolo
+     * @param id ID da sessão
+     * @param loginIdolo Login do ídolo
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws UsuarioJaTemRelacaoException Se já for ídolo
+     * @throws UsuarioRelacaoParaSiException Se tentar adicionar a si mesmo
+     * @throws UsuarioEhInimigoException Se forem inimigos
      */
-
-    public void adicionarIdolo (String id, String loginIdolo)
-            throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException, UsuarioRelacaoParaSiException, UsuarioEhInimigoException {
+    public void adicionarIdolo(String id, String loginIdolo)
+            throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException,
+            UsuarioRelacaoParaSiException, UsuarioEhInimigoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         User idolo = this.jackutServicesFacade.getUsuario(loginIdolo);
-
         this.jackutServicesFacade.adicionarIdolo(user, idolo);
     }
 
     /**
-     * Retorna a lista de fãs do usuário com a sessão aberta identificada por id.
+     * Obtém os fãs de um usuário.
      *
-     * @param login  ID da sessão
-     * @return       Lista de ídolos do usuário formatada em uma {@code String}
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso o usuário não esteja cadastrado
-     *
-     * @see UtilidadeString
+     * @param login Login do usuário
+     * @return Lista de fãs formatada
+     * @throws UsuarioNaoRegistradoException Se o usuário não existir
      */
-
     public String getFas(String login) throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getUsuario(login);
-
         return this.jackutServicesFacade.getFas(user);
     }
 
     /**
-     * Retorna um booleano indicando se o usuário com a sessão aberta identificada por id paquera o usuário que passamos ou nao.
+     * Verifica se um usuário paquera outro.
      *
-     * @param id            ID da sessão
-     * @param loginPaquera  Login do usuário paquerado
-     * @return         Booleano indicando se o usuário paquera o usuário especificado
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso o usuário ou o paquera não estejam cadastrados
+     * @param id ID da sessão
+     * @param loginPaquera Login do paquerado
+     * @return true se paquera
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
      */
-
     public boolean ehPaquera(String id, String loginPaquera) throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         User paquera = this.jackutServicesFacade.getUsuario(loginPaquera);
-
         return user.getPaqueras().contains(paquera);
     }
 
     /**
-     * Adiciona um paquera ao usuário com a sessão aberta identificada por id.
+     * Adiciona um paquera ao usuário.
      *
-     * @param id            ID da sessão
-     * @param loginPaquera  Login do usuário paquerado
-     *
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário ou o paquera não estejam cadastrados
-     * @throws UsuarioJaTemRelacaoException   Exceção lançada caso o usuário já seja paquera do paquera
-     * @throws UsuarioRelacaoParaSiException    Exceção lançada caso o usuário tente adicionar a si mesmo como paquera
-     * @throws UsuarioEhInimigoException      Exceção lançada caso o usuário tente adicionar um inimigo como paquera
+     * @param id ID da sessão
+     * @param loginPaquera Login do paquerado
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws UsuarioJaTemRelacaoException Se já paquera
+     * @throws UsuarioRelacaoParaSiException Se tentar adicionar a si mesmo
+     * @throws UsuarioEhInimigoException Se forem inimigos
      */
-
-    public void adicionarPaquera (String id, String loginPaquera)
-            throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException, UsuarioRelacaoParaSiException, UsuarioEhInimigoException {
+    public void adicionarPaquera(String id, String loginPaquera)
+            throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException,
+            UsuarioRelacaoParaSiException, UsuarioEhInimigoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         User paquera = this.jackutServicesFacade.getUsuario(loginPaquera);
-
         this.jackutServicesFacade.adicionarPaquera(user, paquera);
     }
 
     /**
-     * Retorna a lista de paqueras do usuário com a sessão aberta identificada por id.
+     * Obtém os paqueras do usuário.
      *
-     * @param id  ID da sessão
-     * @return    Lista de paqueras do usuário
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso o usuário não esteja cadastrado
-     *
-     * @see UtilidadeString
+     * @param id ID da sessão
+     * @return Lista de paqueras formatada
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
      */
-
     public String getPaqueras(String id) throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
-
         return this.jackutServicesFacade.getPaqueras(user);
     }
 
     /**
-     * Adiciona um inimigo ao usuário com a sessão aberta identificada por id.
+     * Adiciona um inimigo ao usuário.
      *
-     * @param id            ID da sessão
-     * @param loginInimigo  Login do usuário inimigo
-     *
-     * @throws UsuarioNaoRegistradoException  Exceção lançada caso o usuário ou o inimigo não estejam cadastrados
-     * @throws UsuarioJaTemRelacaoException   Exceção lançada caso o usuário já seja inimigo do inimigo
-     * @throws UsuarioRelacaoParaSiException    Exceção lançada caso o usuário tente adicionar a si mesmo como inimigo
+     * @param id ID da sessão
+     * @param loginInimigo Login do inimigo
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws UsuarioJaTemRelacaoException Se já for inimigo
+     * @throws UsuarioRelacaoParaSiException Se tentar adicionar a si mesmo
      */
-
     public void adicionarInimigo(String id, String loginInimigo)
             throws UsuarioNaoRegistradoException, UsuarioJaTemRelacaoException, UsuarioRelacaoParaSiException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         User inimigo = this.jackutServicesFacade.getUsuario(loginInimigo);
-
         this.jackutServicesFacade.adicionarInimigo(user, inimigo);
     }
 
     /**
-     * Deleta um usuário do sistema
+     * Remove um usuário do sistema.
      *
      * @param id ID da sessão
-     *
-     * @throws UsuarioNaoRegistradoException Exceção lançada caso o usuário não esteja cadastrado
+     * @throws UsuarioNaoRegistradoException Se a sessão for inválida
      */
-
     public void removerUsuario(String id) throws UsuarioNaoRegistradoException {
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
-
         this.jackutServicesFacade.removerUsuario(user, id);
     }
 
+    /**
+     * Atribui moderador a um membro da comunidade.
+     *
+     * @param id ID da sessão
+     * @param comunidade Nome da comunidade
+     * @param loginModerador Login do novo moderador
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
+     * @throws ModeradorException Se não tiver permissão
+     */
     public void atribuirModerador(String id, String comunidade, String loginModerador)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
-
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         this.jackutServicesFacade.atribuirModerador(user, comunidade, loginModerador);
     }
 
+    /**
+     * Obtém os moderadores de uma comunidade.
+     *
+     * @param nome Nome da comunidade
+     * @return Lista de moderadores formatada
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
+     */
     public String getModeradoresComunidade(String nome) throws ComunidadeNaoExisteException {
         return this.jackutServicesFacade.getModeradoresComunidade(nome);
     }
 
+    /**
+     * Expulsa um membro de uma comunidade.
+     *
+     * @param id ID da sessão
+     * @param comunidade Nome da comunidade
+     * @param loginMembro Login do membro
+     * @throws UsuarioNaoRegistradoException Se algum usuário não existir
+     * @throws ComunidadeNaoExisteException Se a comunidade não existir
+     * @throws ModeradorException Se não tiver permissão
+     */
     public void expulsarMembroComunidade(String id, String comunidade, String loginMembro)
             throws UsuarioNaoRegistradoException, ComunidadeNaoExisteException, ModeradorException {
-
         User user = this.jackutServicesFacade.getSessaoUsuario(id);
         this.jackutServicesFacade.expulsarMembroComunidade(user, comunidade, loginMembro);
     }
 
     /**
-     * Grava o cadastro em arquivo e encerra o programa.
-     * Salva usuários cadastrados.
+     * Salva os dados do sistema e encerra.
      */
-
     public void encerrarSistema() {
         this.jackutServicesFacade.encerrarSistema();
     }

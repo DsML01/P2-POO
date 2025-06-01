@@ -56,7 +56,7 @@ public class LeituraDeArquivos {
 
         String[] dados;
         String linha;
-        
+
         try (BufferedReader br = new BufferedReader(new FileReader(file))){
             while ((linha = br.readLine()) != null) {
                 dados = linha.split(";");
@@ -113,35 +113,23 @@ public class LeituraDeArquivos {
      * @param dados    Dados do arquivo (linha atual).
      */
     private static void lerAmigos(JackutServicesFacade jackutServicesFacade, String[] dados) {
-        // Pega o usuário principal da linha
         User user = jackutServicesFacade.getUsuario(dados[0]);
 
-        // Verificação de segurança para evitar erro se a lista de amigos estiver vazia ou mal formatada
         if (dados.length < 2 || dados[1].length() <= 2) {
             return;
         }
-
-        // Extrai os logins dos amigos da string "{amigo1,amigo2,...}"
         String[] amigosLogins = dados[1].substring(1, dados[1].length() - 1).split(",");
 
         for (String amigoLogin : amigosLogins) {
-            // .trim() é adicionado para remover quaisquer espaços em branco acidentais
-            String loginLimpo = amigoLogin.trim();
+             String loginLimpo = amigoLogin.trim();
             if (loginLimpo.isEmpty()) {
                 continue;
             }
 
             User amigo = jackutServicesFacade.getUsuario(loginLimpo);
-
-            // Estabelece a amizade nos dois sentidos para garantir a consistência do estado.
-            // Assumindo que o método em User foi renomeado de 'setAmigo' para 'adicionarAmigo' para maior clareza.
-
-            // Adiciona 'amigo' à lista de amigos de 'user'
             user.adicionarAmigo(amigo);
 
-            // PONTO CRÍTICO DA CORREÇÃO:
-            // Adiciona 'user' à lista de amigos de 'amigo' para completar a relação
-            amigo.adicionarAmigo(user);
+             amigo.adicionarAmigo(user);
         }
     }
 
@@ -170,133 +158,6 @@ public class LeituraDeArquivos {
      * @param comunidades  Mapa de comunidades.
      */
 
-//    private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
-//        User dono = jackutServicesFacade.getUsuario(dados[0]);
-//        String nome = dados[1];
-//        String descricao = dados[2];
-//
-//        Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
-//
-//        dono.setDonoComunidade(novaComunidade);
-//
-//        String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
-//
-//        for (String membro : membros) {
-//            if (membro.equals(dono.getLogin())) {
-//                continue;
-//            }
-//
-//            novaComunidade.adicionarMembro(jackutServicesFacade.getUsuario(membro));
-//        }
-//
-//        jackutServicesFacade.setComunidade(dono, nome, descricao);
-//
-//        try {
-//            for (String login : comunidades.keySet()) {
-//                User user = jackutServicesFacade.getUsuario(login);
-//                for (String comunidade : comunidades.get(login)) {
-//                    user.setParticipanteComunidade(jackutServicesFacade.getComunidade(comunidade));
-//                }
-//            }
-//        } catch (ComunidadeNaoExisteException e) {}
-//    }
-
-//    private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
-//        User dono = jackutServicesFacade.getUsuario(dados[0]);
-//        String nome = dados[1];
-//        String descricao = dados[2];
-//
-//        Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
-//
-//        // O dono já foi adicionado como membro no construtor da Comunidade,
-//        // e como participante em registrarNovaComunidade, então vamos garantir a consistência aqui também.
-//        dono.setDonoComunidade(novaComunidade);
-//        // Não precisa chamar dono.setParticipanteComunidade, pois a lógica final do método já fará isso.
-//
-//        String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
-//
-//        for (String membroLogin : membros) {
-//            if (membroLogin.isEmpty() || membroLogin.equals(dono.getLogin())) {
-//                continue;
-//            }
-//            User membro = jackutServicesFacade.getUsuario(membroLogin);
-//            novaComunidade.adicionarMembro(membro);
-//        }
-//
-//        // --- CORREÇÃO AQUI ---
-//        // ANTES (INCORRETO):
-//        // jackutServicesFacade.setComunidade(dono, nome, descricao);
-//
-//        // DEPOIS (CORRETO):
-//        jackutServicesFacade.carregarComunidade(novaComunidade);
-//        // --- FIM DA CORREÇÃO ---
-//
-//
-//        // Esta parte final do seu método agora funcionará corretamente,
-//        // pois 'getComunidade' retornará o objeto completo que acabamos de carregar.
-//        try {
-//            for (String login : comunidades.keySet()) {
-//                User user = jackutServicesFacade.getUsuario(login);
-//                for (String comunidadeNome : comunidades.get(login)) {
-//                    if(!comunidadeNome.trim().isEmpty()){
-//                        Comunidade c = jackutServicesFacade.getComunidade(comunidadeNome);
-//                        user.setParticipanteComunidade(c);
-//                    }
-//                }
-//            }
-//        } catch (ComunidadeNaoExisteException e) {
-//            // Este erro não deve mais acontecer para comunidades válidas.
-//        }
-//    }
-
-//    private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
-//        User dono = jackutServicesFacade.getUsuario(dados[0]);
-//        String nome = dados[1];
-//        String descricao = dados[2];
-//
-//        Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
-//
-//        // Membros
-//        String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
-//        for (String membroLogin : membros) {
-//            if (!membroLogin.trim().isEmpty() && !membroLogin.equals(dono.getLogin())) {
-//                novaComunidade.adicionarMembro(jackutServicesFacade.getUsuario(membroLogin.trim()));
-//            }
-//        }
-//
-//        // Moderadores (novo campo)
-//        if (dados.length > 4) {
-//            String[] moderadores = dados[4].substring(1, dados[4].length() - 1).split(",");
-//            for (String moderadorLogin : moderadores) {
-//                if (!moderadorLogin.trim().isEmpty()) {
-//                    novaComunidade.adicionarModerador(jackutServicesFacade.getUsuario(moderadorLogin.trim()));
-//                }
-//            }
-//        }
-//
-//        jackutServicesFacade.carregarComunidade(novaComunidade);
-//
-//
-//        // Esta parte final, que lê os dados de participação do arquivo usuarios.txt, permanece.
-//        // Ela vai garantir que os membros (incluindo o dono) sejam corretamente associados
-//        // às suas comunidades, e o User.setParticipanteComunidade() tem a trava anti-duplicatas.
-//        try {
-//            for (String login : comunidades.keySet()) {
-//                User user = jackutServicesFacade.getUsuario(login);
-//                for (String comunidadeNome : comunidades.get(login)) {
-//                    if(!comunidadeNome.trim().isEmpty()){
-//                        Comunidade c = jackutServicesFacade.getComunidade(comunidadeNome);
-//                        // O método setParticipanteComunidade na classe User deve ter uma verificação
-//                        // "if (list.contains(c)) return;" para ser 100% seguro.
-//                        user.setParticipanteComunidade(c);
-//                    }
-//                }
-//            }
-//        } catch (ComunidadeNaoExisteException e) {
-//            // Tratar exceção, se necessário
-//        }
-//    }
-
     private static void lerComunidades(JackutServicesFacade jackutServicesFacade, String[] dados, Map<String, String[]> comunidades) {
         User dono = jackutServicesFacade.getUsuario(dados[0]);
         String nome = dados[1];
@@ -304,7 +165,7 @@ public class LeituraDeArquivos {
 
         Comunidade novaComunidade = new Comunidade(dono, nome, descricao);
 
-        // Membros (campo 3)
+
         String[] membros = dados[3].substring(1, dados[3].length() - 1).split(",");
         for (String membroLogin : membros) {
             if (!membroLogin.trim().isEmpty() && !membroLogin.equals(dono.getLogin())) {
@@ -312,7 +173,7 @@ public class LeituraDeArquivos {
             }
         }
 
-        // Moderadores (campo 4 - opcional)
+
         if (dados.length > 4 && !dados[4].isEmpty()) {
             String[] moderadores = dados[4].substring(1, dados[4].length() - 1).split(",");
             for (String moderadorLogin : moderadores) {
@@ -322,16 +183,13 @@ public class LeituraDeArquivos {
             }
         }
 
-        // Membros banidos (campo 5 - opcional)
         if (dados.length > 5 && !dados[5].isEmpty()) {
             String[] banidos = dados[5].substring(1, dados[5].length() - 1).split(",");
             for (String banidoLogin : banidos) {
                 if (!banidoLogin.trim().isEmpty()) {
                     User usuarioBanido = jackutServicesFacade.getUsuario(banidoLogin.trim());
-                    // Adiciona à lista de banidos sem verificar duplicatas (o Set já cuida disso)
                     novaComunidade.getMembrosBanidos().add(usuarioBanido);
 
-                    // Remove da lista de membros ativos se estiver lá
                     novaComunidade.getMembros().remove(usuarioBanido);
                     novaComunidade.getModeradores().remove(usuarioBanido);
                 }
@@ -341,7 +199,6 @@ public class LeituraDeArquivos {
         // Carrega a comunidade no sistema
         jackutServicesFacade.carregarComunidade(novaComunidade);
 
-        // Associa a comunidade aos usuários (parte de persistência dos usuários)
         try {
             for (String login : comunidades.keySet()) {
                 User user = jackutServicesFacade.getUsuario(login);
@@ -350,12 +207,11 @@ public class LeituraDeArquivos {
                         try {
                             Comunidade c = jackutServicesFacade.getComunidade(comunidadeNome);
 
-                            // Verifica se o usuário não está banido antes de adicionar
                             if (!c.getMembrosBanidos().contains(user)) {
                                 user.setParticipanteComunidade(c);
                             }
                         } catch (ComunidadeNaoExisteException e) {
-                            //System.err.println("Comunidade não encontrada: " + comunidadeNome);
+                            //nada
                         }
                     }
                 }
@@ -376,8 +232,7 @@ public class LeituraDeArquivos {
         User user = jackutServicesFacade.getUsuario(dados[0]);
         String mensagem = dados[1];
         Mensagem msg = new Mensagem(mensagem);
-
-        // ANTES: user.receberMensagem(msg);
+        
         user.getCaixaDeEntrada().receberMensagem(msg); // DEPOIS
     }
 

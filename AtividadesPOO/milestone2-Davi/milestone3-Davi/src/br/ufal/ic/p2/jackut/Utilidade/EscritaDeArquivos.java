@@ -123,7 +123,6 @@ public class EscritaDeArquivos {
      * @param comunidades  Map com as comunidades.
      */
 
-// Utilidade/EscritaDeArquivos.java
     public static void salvarComunidades(Map<String, Comunidade> comunidades) {
         StringBuilder comunidadesData = new StringBuilder();
         for (Comunidade comunidade : comunidades.values()) {

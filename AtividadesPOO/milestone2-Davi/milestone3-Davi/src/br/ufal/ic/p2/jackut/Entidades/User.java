@@ -39,10 +39,10 @@ public class User {
     /**
      * Construtor da classe User.
      *
-     * @param login Login para acesso ao sistema.
-     * @param senha Senha para acesso ao sistema.
-     * @param nome  Nome de exibição do usuário.
-     * @throws LoginOuSenhaInvalidoException se o login ou a senha forem nulos.
+     * @param login Login para acesso ao sistema
+     * @param senha Senha para acesso ao sistema
+     * @param nome Nome de exibição do usuário
+     * @throws LoginOuSenhaInvalidoException se o login ou a senha forem nulos
      */
     public User(String login, String senha, String nome) throws LoginOuSenhaInvalidoException {
         if (login == null) {
@@ -56,29 +56,118 @@ public class User {
         this.nome = nome;
     }
 
+    /**
+     * Retorna o login do usuário.
+     *
+     * @return Login do usuário
+     */
     public String getLogin() { return this.login; }
+
+    /**
+     * Retorna a senha do usuário.
+     *
+     * @return Senha do usuário
+     */
     public String getSenha() { return this.senha; }
+
+    /**
+     * Retorna o nome do usuário.
+     *
+     * @return Nome do usuário
+     */
     public String getNome() { return this.nome; }
+
+    /**
+     * Retorna o perfil do usuário.
+     *
+     * @return Objeto Perfil do usuário
+     */
     public Perfil getPerfil() { return this.perfil; }
+
+    /**
+     * Retorna a caixa de entrada do usuário.
+     *
+     * @return Objeto CaixaDeEntrada do usuário
+     */
     public CaixaDeEntrada getCaixaDeEntrada() { return this.caixaDeEntrada; }
+
+    /**
+     * Retorna a lista de amigos do usuário.
+     *
+     * @return ArrayList de amigos
+     */
     public ArrayList<User> getAmigos() { return this.amigos; }
+
+    /**
+     * Retorna a lista de solicitações de amizade enviadas.
+     *
+     * @return ArrayList de solicitações enviadas
+     */
     public ArrayList<User> getSolicitacoesEnviadas() { return this.solicitacoesEnviadas; }
+
+    /**
+     * Retorna a lista de solicitações de amizade recebidas.
+     *
+     * @return ArrayList de solicitações recebidas
+     */
     public ArrayList<User> getSolicitacoesRecebidas() { return this.solicitacoesRecebidas; }
+
+    /**
+     * Retorna a lista de comunidades das quais o usuário é proprietário.
+     *
+     * @return ArrayList de comunidades proprietárias
+     */
     public ArrayList<Comunidade> getComunidadesProprietarias() { return this.comunidadesProprietarias; }
+
+    /**
+     * Retorna a lista de comunidades das quais o usuário participa.
+     *
+     * @return ArrayList de comunidades participantes
+     */
     public ArrayList<Comunidade> getComunidadesParticipantes() { return this.comunidadesParticipantes; }
+
+    /**
+     * Retorna a lista de ídolos do usuário.
+     *
+     * @return ArrayList de ídolos
+     */
     public ArrayList<User> getIdolos() { return this.idolos; }
+
+    /**
+     * Retorna a lista de fãs do usuário.
+     *
+     * @return ArrayList de fãs
+     */
     public ArrayList<User> getFas() { return this.fas; }
+
+    /**
+     * Retorna a lista de paqueras do usuário.
+     *
+     * @return ArrayList de paqueras
+     */
     public ArrayList<User> getPaqueras() { return this.paqueras; }
+
+    /**
+     * Retorna a lista de paqueras recebidas pelo usuário.
+     *
+     * @return ArrayList de paqueras recebidas
+     */
     public ArrayList<User> getPaquerasRecebidas() { return this.paquerasRecebidas; }
+
+    /**
+     * Retorna a lista de inimigos do usuário.
+     *
+     * @return ArrayList de inimigos
+     */
     public ArrayList<User> getInimigos() { return this.inimigos; }
 
     /**
      * Obtém o valor de um atributo do usuário.
      * Busca primeiro no atributo "nome" e depois no perfil.
      *
-     * @param atributo O nome do atributo a ser buscado.
-     * @return O valor do atributo.
-     * @throws AtributoNaoPreenchidoException se o atributo não for encontrado.
+     * @param atributo O nome do atributo a ser buscado
+     * @return O valor do atributo
+     * @throws AtributoNaoPreenchidoException se o atributo não for encontrado
      */
     public String getAtributo(String atributo) throws AtributoNaoPreenchidoException {
         if (atributo.equals("nome")) {
@@ -89,66 +178,178 @@ public class User {
     }
 
     /**
-     * Retorna a lista de amigos formatada como uma String.
-     * A ordem dos amigos na string depende da ordem de inserção na lista.
+     * Retorna a lista de amigos formatada como string.
      *
-     * @return Uma string com os logins dos amigos. Ex: "{amigo1,amigo2}"
+     * @return String formatada com os amigos
+     * @see UtilidadeString
      */
     public String getAmigosString() {
         return UtilidadeString.formatArrayList(this.amigos);
     }
 
     /**
-     * Retorna a lista de fãs formatada como uma String.
+     * Retorna a lista de fãs formatada como string.
      *
-     * @return Uma string com os logins dos fãs.
+     * @return String formatada com os fãs
+     * @see UtilidadeString
      */
     public String getFasString() { return UtilidadeString.formatArrayList(this.fas); }
 
     /**
-     * Retorna a lista de paqueras formatada como uma String.
+     * Retorna a lista de paqueras formatada como string.
      *
-     * @return Uma string com os logins dos paqueras.
+     * @return String formatada com as paqueras
+     * @see UtilidadeString
      */
     public String getPaquerasString() { return UtilidadeString.formatArrayList(this.paqueras); }
 
-
+    /**
+     * Adiciona um amigo à lista de amigos.
+     *
+     * @param amigo Usuário a ser adicionado como amigo
+     */
     public void adicionarAmigo(User amigo) {
         if (!this.amigos.contains(amigo)) {
             this.amigos.add(amigo);
         }
     }
 
+    /**
+     * Adiciona uma solicitação de amizade enviada.
+     *
+     * @param user Usuário que recebeu a solicitação
+     */
     public void adicionarSolicitacaoEnviada(User user) { this.solicitacoesEnviadas.add(user); }
+
+    /**
+     * Adiciona uma solicitação de amizade recebida.
+     *
+     * @param user Usuário que enviou a solicitação
+     */
     public void adicionarSolicitacaoRecebida(User user) { this.solicitacoesRecebidas.add(user); }
+
+    /**
+     * Adiciona uma comunidade como proprietário.
+     *
+     * @param comunidade Comunidade a ser adicionada
+     */
     public void setDonoComunidade(Comunidade comunidade) { this.comunidadesProprietarias.add(comunidade); }
+
+    /**
+     * Adiciona uma comunidade como participante.
+     *
+     * @param comunidade Comunidade a ser adicionada
+     */
     public void setParticipanteComunidade(Comunidade comunidade) {
         if (!this.comunidadesParticipantes.contains(comunidade)) {
             this.comunidadesParticipantes.add(comunidade);
         }
     }
+
+    /**
+     * Adiciona um ídolo à lista de ídolos.
+     *
+     * @param idolo Usuário a ser adicionado como ídolo
+     */
     public void setIdolo(User idolo) { this.idolos.add(idolo); }
+
+    /**
+     * Adiciona um fã à lista de fãs.
+     *
+     * @param fa Usuário a ser adicionado como fã
+     */
     public void setFa(User fa) { this.fas.add(fa); }
+
+    /**
+     * Adiciona uma paquera à lista de paqueras.
+     *
+     * @param paquera Usuário a ser adicionado como paquera
+     */
     public void setPaquera(User paquera) { this.paqueras.add(paquera); }
+
+    /**
+     * Adiciona uma paquera recebida.
+     *
+     * @param user Usuário que enviou a paquera
+     */
     public void setPaquerasRecebidas(User user) { this.paquerasRecebidas.add(user); }
+
+    /**
+     * Adiciona um inimigo à lista de inimigos.
+     *
+     * @param inimigo Usuário a ser adicionado como inimigo
+     */
     public void setInimigo(User inimigo) { this.inimigos.add(inimigo); }
 
+    /**
+     * Remove um amigo da lista de amigos.
+     *
+     * @param user Usuário a ser removido
+     */
     public void removerAmigo(User user) { this.amigos.remove(user); }
+
+    /**
+     * Remove uma solicitação de amizade enviada.
+     *
+     * @param user Usuário a ser removido das solicitações enviadas
+     */
     public void removerSolicitacaoEnviada(User user) { this.solicitacoesEnviadas.remove(user); }
+
+    /**
+     * Remove uma solicitação de amizade recebida.
+     *
+     * @param user Usuário a ser removido das solicitações recebidas
+     */
     public void removerSolicitacaoRecebida(User user) { this.solicitacoesRecebidas.remove(user); }
+
+    /**
+     * Remove o usuário de uma comunidade.
+     *
+     * @param comunidade Comunidade da qual o usuário vai sair
+     */
     public void sairComunidade(Comunidade comunidade) { this.comunidadesParticipantes.remove(comunidade); }
+
+    /**
+     * Remove um fã da lista de fãs.
+     *
+     * @param user Usuário a ser removido
+     */
     public void removerFa(User user) { this.fas.remove(user); }
+
+    /**
+     * Remove um ídolo da lista de ídolos.
+     *
+     * @param user Usuário a ser removido
+     */
     public void removerIdolo(User user) { this.idolos.remove(user); }
+
+    /**
+     * Remove uma paquera da lista de paqueras.
+     *
+     * @param user Usuário a ser removido
+     */
     public void removerPaquera(User user) { this.paqueras.remove(user); }
+
+    /**
+     * Remove uma paquera recebida.
+     *
+     * @param user Usuário a ser removido
+     */
     public void removerPaqueraRecebida(User user) { this.paquerasRecebidas.remove(user); }
+
+    /**
+     * Remove um inimigo da lista de inimigos.
+     *
+     * @param user Usuário a ser removido
+     */
     public void removerInimigo(User user) { this.inimigos.remove(user); }
 
     /**
-     * Retorna uma lista das comunidades em que o usuário participa.
-     * A lista é formatada como uma String, sem duplicatas e ordenada
-     * alfabeticamente pelo nome da comunidade.
+     * Retorna a lista de comunidades formatada como string.
+     * A lista é ordenada alfabeticamente pelo nome da comunidade.
      *
-     * @return String formatada com a lista de comunidades. Ex: "{Comunidade A,Comunidade B}"
+     * @return String formatada com as comunidades
+     * @see UtilidadeString
      */
     public String getComunidadesString() {
         ArrayList<Comunidade> comunidadesOrdenadas = new ArrayList<>(this.comunidadesParticipantes);
@@ -159,17 +360,17 @@ public class User {
     /**
      * Verifica se a senha fornecida corresponde à senha do usuário.
      *
-     * @param senha A senha a ser verificada.
-     * @return {@code true} se a senha for correta, {@code false} caso contrário.
+     * @param senha Senha a ser verificada
+     * @return true se a senha for correta, false caso contrário
      */
     public boolean verificarSenha(String senha) {
         return this.senha.equals(senha);
     }
 
     /**
-     * Retorna a representação em String do objeto User, que é o seu login.
+     * Retorna a representação em string do usuário (seu login).
      *
-     * @return O login do usuário.
+     * @return Login do usuário
      */
     @Override
     public String toString() {
